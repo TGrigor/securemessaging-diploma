@@ -1,0 +1,8 @@
+﻿<link href="~/css/chat/chat_users.css" rel="stylesheet" />
+
+<div class="chat-users">
+    @foreach (var std in ViewData["Users"] as List<UserViewModel>)
+    {
+        <a href="#">@std.UserName</a> <br />
+    }
+</div>

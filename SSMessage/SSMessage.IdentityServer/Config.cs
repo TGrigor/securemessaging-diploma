@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System;
@@ -62,7 +63,26 @@ namespace SSMessage.IdentityServer
 
         public static IEnumerable<Client> GetClient()
         {
-            return new List<Client>();
+            return new List<Client>()
+            {
+                new Client
+                {
+                    ClientId = "ssmessageclient",
+                    ClientName = "ASP.Net Core Client (Send Secure Message)",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+
+                    RedirectUris =
+                    {
+                        "https://localhost:44302/signin-oidc"
+                    },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                    },
+                }
+            };
         }
     }
 }

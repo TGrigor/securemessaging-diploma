@@ -1,0 +1,15 @@
+﻿<link href="~/css/chat/chat_messaging.css" rel="stylesheet" />
+<script src="~/js/chat/chat_messaging.js"></script>
+<script>
+    $(document).ready(function () {
+        messagingManager.init();
+    });
+</script>
+
+<div class="message-box">
+    <div class="message-content-box col-xs-12"></div>
+    <div class="message-footer-box col-xs-12">
+        <textarea class="form-control" id="txtMessage"></textarea>
+        <button type="button" class="btn" id="btnSendMessage" data-tooltip-content="Press Enter to send Press Shift+Enter to add a new paragraph" onclick="messagingManager.addMessage()">Enter</button>
+    </div>
+</div>
