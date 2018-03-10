@@ -2,13 +2,13 @@
 {
     var init = function ()
     {
-
         load();
     }
 
     var load = function ()
     {
-        alert("Loading...");
+        //TODO Loading icon
+        //alert("Loading...");
     }
     
     return {

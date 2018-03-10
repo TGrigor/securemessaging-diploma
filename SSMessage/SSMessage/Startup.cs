@@ -29,6 +29,8 @@ namespace SSMessage
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSignalR();
+
             //services.AddAuthentication(options =>
             //{
             //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -60,11 +62,17 @@ namespace SSMessage
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("chat");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
