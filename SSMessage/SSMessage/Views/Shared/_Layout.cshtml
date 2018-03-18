@@ -36,7 +36,9 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-area="" asp-controller="Chat" asp-action="Index">Chat</a></li>
+                        <li>
+                            <a href="/Chat/Index">Chat</a>
+                        </li>
                     }
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>

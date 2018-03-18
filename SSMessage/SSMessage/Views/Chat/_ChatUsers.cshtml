@@ -1,8 +1,14 @@
 ﻿<link href="~/css/chat/chat_users.css" rel="stylesheet" />
+<script src="~/js/chat/user_manager.js"></script>
+<script>
+    $(document).ready(function () {
+        userManager.init();
+    });
+</script>
 
 <div class="chat-users">
     @foreach (var std in ViewData["Users"] as List<UserViewModel>)
     {
-        <a href="#">@std.UserName</a> <br />
+        <a href="#" class="user-list">@std.UserName</a> <br />
     }
 </div>

@@ -5,7 +5,7 @@
 <script>
     $(document).ready(function ()
     {
-        messagingManager.init();
+        messagingManager.init("@User.Identity.Name");
     });
 </script>
 
@@ -13,6 +13,6 @@
     <div class="message-content-box col-xs-12"></div>
     <div class="message-footer-box col-xs-12">
         <textarea class="form-control" id="txtMessage"></textarea>
-        <button type="button" class="btn" id="btnSendMessage" data-tooltip-content="Press Enter to send Press Shift+Enter to add a new paragraph" @*onclick="messagingManager.addMessage()" *@>Enter</button>
+        <button type="button" class="btn" id="btnSendMessage" data-tooltip-content="Press Enter to send Press Shift+Enter to add a new paragraph" onclick="messagingManager.addMessage(messageType.Outgoing)" >Enter</button>
     </div>
 </div>
