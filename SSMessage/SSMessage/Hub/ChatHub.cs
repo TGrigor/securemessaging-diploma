@@ -13,15 +13,12 @@ namespace SSMessage
         private readonly static ConnectionMapping<string> _connections =
           new ConnectionMapping<string>();
 
-        public void Send(string toUserName, string message)
+        public void Send(string toUserName,string connectionId, string message)
         {
 
             string fromUserName = Context.User.Identity.Name;
 
-            foreach (var connectionId in _connections.GetConnections(toUserName))
-            {
-                Clients.Client(connectionId).InvokeAsync("broadcastMessage", fromUserName, message);
-            }
+            Clients.Client(connectionId).InvokeAsync("broadcastMessage", fromUserName, message);
         }
 
         public override Task OnConnectedAsync()
@@ -30,7 +27,7 @@ namespace SSMessage
 
             _connections.Add(name, Context.ConnectionId);
 
-           return Clients.All.InvokeAsync("SendAction", Context.User.Identity.Name, "Joined");
+           return Clients.All.InvokeAsync("ConnectedAction", name, Context.ConnectionId);
 
         }
 
@@ -40,7 +37,7 @@ namespace SSMessage
 
             _connections.Remove(name, Context.ConnectionId);
 
-            return Clients.All.InvokeAsync("SendAction", Context.User.Identity.Name, "Disconnected");
+            return Clients.All.InvokeAsync("DisconnectAction", name, Context.ConnectionId);
         }
     }
 }

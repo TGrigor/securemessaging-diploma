@@ -1,35 +1,39 @@
 ﻿var messageType = {
-    Outgoing : 0,
-    Incoming : 1
+    Outgoing: 0,
+    Incoming: 1
 }
 
 var messagingManager = function () {
 
-    var txtMessage;
+    var inputMessage;
     var btnSendMessage;
-    var messageContent;
-    var currentUserName;
+    var currentUserName = "";
+    var message_side = 'left';
+    var test;
 
     var init = function (userName) {
-
-        txtMessage = $("#txtMessage");
+        currentUserName = userName;
+        inputMessage = $("#inputMessage");
         btnSendMessage = $("#btnSendMessage");
-        messageContent = $(".message-content-box");
 
-        this.currentUserName = userName;
         load();
     }
 
     var load = function () {
         //Focus to textarea
-        txtMessage.focus();
+        inputMessage.focus();
 
-        // Enter key event for Textarea
-        txtMessage.keyup(function (event) {
-            var code = event.keyCode ? event.keyCode : event.which;
-            if (code === 13 && !event.shiftKey) {
-                addMessage(messageType.Outgoing);
+        btnSendMessage.click(function (e) {
+            return addMessage(getMessageText(), messageType.Outgoing);
+        });
+
+        // Enter key event for input
+        inputMessage.keyup(function (e) {
+            if (e.which === 13 && !e.shiftKey) {
+                // enter key
+                var code = e.keyCode ? e.keyCode : e.which;
                 btnSendMessage.click();
+                return addMessage(getMessageText(), messageType.Outgoing);
             }
         });
 
@@ -38,21 +42,35 @@ var messagingManager = function () {
             // Create a function that the hub can call to broadcast messages.
             connection.on('broadcastMessage', function (fromUserName, message) {
                 // Html encode display name and message.
-                txtMessage.val(message);
-                addMessage(messageType.Incoming);
-
-                // Add the message to the page.
-                //var liElement = document.createElement('li');
-                //liElement.innerHTML = '<strong>' + fromUserName + '</strong>:&nbsp;&nbsp;';
-                //messageContent.append(liElement);
+                addMessage(message, messageType.Incoming);
                 deleteMeesageBox();
+            });
+
+            connection.on('ConnectedAction', function (connectedUserName, connectedUserId) {
+                if (connectedUserName === currentUserName)
+                {
+                    return;
+                }
+                else
+                {
+                    console.log(connectedUserName + "---- Connected");
+                }
+            });
+
+            connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId) {
+                if (disconnectedUserName === currentUserName) {
+
+                }
+                else {
+                    console.log(disconnectedUserName + "---- Disconnected");
+                }
             });
         })
             .then(function (connection) {
                 console.log('connection started');
                 btnSendMessage.on('click', function (event) {
                     // Call the Send method on the hub.
-                    connection.invoke('send', userManager.getSendToUserName(), txtMessage.val());
+                    connection.invoke('send', userManager.getSendToUserName(), inputMessage.val());
 
                     deleteMeesageBox();
                     event.preventDefault();
@@ -63,43 +81,61 @@ var messagingManager = function () {
             });
     }
 
-    var addMessage = function (mType) {
-        var messageText = txtMessage.val();
-        if (messageText !== '') {
-            var messageBox = messageTemplate(messageText, mType);
-            messageContent.append(messageBox);
+    //Message class Template
+    var Message = function ({ text: text1, message_side: message_side1 }) {
+        this.text = text1;
+        this.message_side = message_side1;
+        this.draw = () => {
+            var $message;
+
+            $message = $($('.message_template').clone().html());
+
+            $message.addClass(this.message_side).find('.text').html(this.text);
+
+            $('.messages').append($message);
+
+            return setTimeout(function () {
+                return $message.addClass('appeared');
+            }, 0);
+        };
+        return this;
+    }
+
+    var getMessageText = function () {
+        return inputMessage.val();
+    }
+
+    var addMessage = function (text, mType) {
+        var $messages, message;
+        //RegX
+        //text = text.replace(/.{10}\S*\s+/g, "$&@").split(/\s+@/)
+
+        if (text.trim() === '') {
+            return;
         }
-        //Scroll To message
-        messageContent.animate({ scrollTop: messageContent.prop("scrollHeight") }, 100);
+        $messages = $('.messages');
+
+        switch (mType) {
+            case messageType.Incoming:
+                message_side = 'right';
+                break;
+            case messageType.Outgoing:
+                message_side = 'left';
+                break;
+        }
+
+        message = new Message({ text, message_side });
+        message.draw();
+
+        return $messages.animate({
+            scrollTop: $messages.prop('scrollHeight')
+        }, 300);
     }
 
     var deleteMeesageBox = function () {
         // Clear text box and reset focus for next comment.
-        txtMessage.val("");
-        txtMessage.focus();
-    }
-
-    var messageTemplate = function (message, mType)
-    {
-        message = message.replace(/.{10}\S*\s+/g, "$&@").split(/\s+@/)
-        var template = "";
-        switch (mType)
-        {
-            case messageType.Incoming:
-                template = "<div class=\"dvIncomingMessage\">";
-                break;
-            case messageType.Outgoing:
-                template = "<div class=\"dvOutgoingMessage\">";
-                break;
-        }
-
-        $.each(message, function (index, value) {
-            template += "<span class=\"spnMessage\">";
-            template += value;
-            template += "</span>";
-        });
-        template += "</div>";
-        return template;
+        inputMessage.val("");
+        inputMessage.focus();
     }
 
     var startConnection = function (url, configureConnection) {
@@ -129,7 +165,6 @@ var messagingManager = function () {
     }
 
     return {
-        init: init,
-        addMessage: addMessage
+        init: init
     }
 }();
