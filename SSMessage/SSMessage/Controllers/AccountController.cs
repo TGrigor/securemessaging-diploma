@@ -44,11 +44,16 @@ namespace SSMessage.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            if (!User.Identity.IsAuthenticated)
+            {
+                // Clear the existing external cookie to ensure a clean login process
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+    
+                ViewData["ReturnUrl"] = returnUrl;
+                return View();
+            }
+            return RedirectToAction(nameof(ChatController.Index), "Chat");
 
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
         }
 
         [HttpPost]
@@ -65,7 +70,7 @@ namespace SSMessage.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction(nameof(ChatController.Index), "Chat");
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -247,7 +252,7 @@ namespace SSMessage.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(AccountController.Login), "Account");
         }
 
         [HttpPost]
@@ -335,7 +340,7 @@ namespace SSMessage.Controllers
         {
             if (userId == null || code == null)
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(AccountController.Login), "Account");
             }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -455,7 +460,7 @@ namespace SSMessage.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(AccountController.Login), "Account");
             }
         }
 

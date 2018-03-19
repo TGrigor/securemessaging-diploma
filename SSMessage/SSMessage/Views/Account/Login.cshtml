@@ -6,12 +6,20 @@
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
+    Layout = null;
+}
+
+@{
     ViewData["Title"] = "Log in";
 }
 <link href="~/css/fonts.google.css" rel="stylesheet" />
 <link href="~/css/login/login.css" rel="stylesheet" />
-<section>
-    <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+<script src="~/js/login/background.js"></script>
+<canvas style="position: fixed;"></canvas>
+
+<section>  
+    @*TODO DELETE CSS STYLE *@
+    <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" style="margin: 0 auto;">
         <div class="svgContainer">
             <div>
                 <svg class="mySVG" viewBox="0 0 200 200">
@@ -127,14 +135,14 @@
                 </label>
             </div>
         </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <p>
                 <a asp-action="ForgotPassword">Forgot your password?</a>
             </p>
             <p>
                 <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
             </p>
-        </div>
+        </div>*@
     </form>
 </section>
 <script src="~/js/login/TweenMax.min.js"></script>
@@ -143,9 +151,9 @@
 @*<h2>@ViewData["Title"]</h2>
 
     <form>
-        
 
-        
+
+
     </form>
 *@
 
