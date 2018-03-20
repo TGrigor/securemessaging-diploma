@@ -2,13 +2,23 @@
 <script src="~/js/chat/user_manager.js"></script>
 <script>
     $(document).ready(function () {
-        userManager.init();
+        userManager.init("@User.Identity.Name");
     });
 </script>
 
 <div class="chat-users">
-    @foreach (var std in ViewData["Users"] as List<UserViewModel>)
-    {
-        <a href="#" class="user-list">@std.UserName</a> <br />
-    }
+    <div id="container">
+        <ul id="tabs">
+            <li id="all" class="active">All</li>
+            <li id="offline">Offline</li>
+            <li id="online">Online</li>
+        </ul>
+
+        <div id="card">
+            <input id="search" type="text" placeholder="  Search">
+            <div id="main">
+                <ul id="users"></ul>
+            </div>
+        </div>
+    </div>
 </div>

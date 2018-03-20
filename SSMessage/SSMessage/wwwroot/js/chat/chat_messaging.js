@@ -7,12 +7,10 @@ var messagingManager = function () {
 
     var inputMessage;
     var btnSendMessage;
-    var currentUserName = "";
     var message_side = 'left';
-    var test;
 
-    var init = function (userName) {
-        currentUserName = userName;
+    var init = function ()
+    {
         inputMessage = $("#inputMessage");
         btnSendMessage = $("#btnSendMessage");
 
@@ -38,33 +36,14 @@ var messagingManager = function () {
         });
 
         // Start the connection.
-        startConnection('/chat', function (connection) {
+        hubManager.startConnection('/chat', function (connection)
+        {
             // Create a function that the hub can call to broadcast messages.
             connection.on('broadcastMessage', function (fromUserName, message) {
                 // Html encode display name and message.
                 addMessage(message, messageType.Incoming);
                 deleteMeesageBox();
-            });
-
-            connection.on('ConnectedAction', function (connectedUserName, connectedUserId) {
-                if (connectedUserName === currentUserName)
-                {
-                    return;
-                }
-                else
-                {
-                    console.log(connectedUserName + "---- Connected");
-                }
-            });
-
-            connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId) {
-                if (disconnectedUserName === currentUserName) {
-
-                }
-                else {
-                    console.log(disconnectedUserName + "---- Disconnected");
-                }
-            });
+            });           
         })
             .then(function (connection) {
                 console.log('connection started');
@@ -137,33 +116,7 @@ var messagingManager = function () {
         inputMessage.val("");
         inputMessage.focus();
     }
-
-    var startConnection = function (url, configureConnection) {
-        return function start(transport) {
-            console.log(`Starting connection using ${signalR.TransportType[transport]} transport`)
-
-            var connection = new signalR.HubConnection(url, { transport: transport });
-
-            if (configureConnection && typeof configureConnection === 'function') {
-                configureConnection(connection);
-            }
-
-            return connection.start()
-                .then(function () {
-                    return connection;
-                })
-                .catch(function (error) {
-                    console.log(`Cannot start the connection use ${signalR.TransportType[transport]} transport. ${error.message}`);
-
-                    if (transport !== signalR.TransportType.LongPolling) {
-                        return start(transport + 1);
-                    }
-
-                    return Promise.reject(error);
-                });
-        }(signalR.TransportType.WebSockets);
-    }
-
+    
     return {
         init: init
     }

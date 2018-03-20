@@ -1,5 +1,168 @@
 ﻿.chat-users {
     width: 100%;
     height: 100%;
-    background-color: #dcf7ff;
 }
+
+    .chat-users * {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+.chat-users {
+    font-family: sans-serif;
+    margin: 1em;
+}
+
+    .chat-users #container {
+        width: 35em;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0;
+        background: #9adaec69;
+        -webkit-box-shadow: 2px 2px 30px #333;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        border-radius: 25px;
+    }
+
+    .chat-users #tabs {
+        list-style-type: none;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+        .chat-users #tabs:hover {
+            cursor: pointer;
+        }
+
+    .chat-users #all {
+        background: #45b6d7;
+        border-radius: 25px 0 0 0;
+    }
+
+    .chat-users #offline {
+        background: #45b6d7;
+        border-radius: 0 25px 0 0;
+    }
+
+    .chat-users #online {
+        background: #45b6d7;
+        border-left: 3px solid rgba(255,255,255,.5);
+        border-right: 3px solid rgba(255,255,255,.5);
+    }
+
+    .chat-users #all.active,
+    #offline.active,
+    #online.active {
+        background: #45b6d7;
+    }
+
+    .chat-users #tabs li {
+        display: table-cell;
+        text-align: center;
+        color: white;
+        padding: 28px 0 15px;
+        width: 33.333333%; /* For older browsers */
+        width: calc(1/3 * 100%); /* Better! */
+    }
+
+        .chat-users #tabs li:nth-child(1) {
+            float: left;
+        }
+
+        .chat-users #tabs li:nth-child(2) {
+            float: right;
+        }
+
+    .chat-users #search {
+        width: 100%;
+        border-radius: 15px;
+        border: 1px solid #DDD;
+        margin: 1px 0;
+    }
+
+    .chat-users #main {
+        border-top: 1px solid #DDD;
+        margin: 1em 0;
+        padding: 0 0 1px 0;
+        height: 440px;
+        overflow: auto;
+    }
+
+    .chat-users #card {
+        margin: 1em;
+        padding: 0;
+    }
+
+    .chat-users #users {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .chat-users #users div {
+            padding: .1em 1em;
+        }
+
+            .chat-users #users div:hover {
+                background: #45b6d7;
+                border-radius: 15px;
+            }
+
+        .chat-users #users p {
+            display: inline-block;
+        }
+
+        .chat-users #users img {
+            display: inline;
+            vertical-align: middle;
+            border-radius: 50%;
+            margin: 1em 1em 1em 0;
+        }
+
+    .chat-users .user {
+        position: relative;
+    }
+
+    .chat-users li {
+        position: relative;
+    }
+
+    .chat-users .status {
+        position: absolute;
+        top: 30%;
+        right: 18px;
+    }
+
+    .chat-users .topic {
+        width: 100%;
+        color: #888;
+        font-size: 0.9em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
+        text-overflow: ellipsis;
+        text-overflow: "…";
+    }
+
+    .chat-users a {
+        color: #de4415;
+        text-decoration: none;
+    }
+
+    .chat-users input {
+        font-family: Octicons;
+        padding: 0.35em 0 0.25em 0.5em;
+    }
+
+    .chat-users .octicon-check {
+        color: rgba(0, 150, 0, .8);
+    }
+
+    .chat-users .octicon-x {
+        color: #aaa;
+    }
+
+    .chat-users .octicon-playback-play {
+        color: #de4415;
+        margin: 0 0.5em 0 1em;
+    }

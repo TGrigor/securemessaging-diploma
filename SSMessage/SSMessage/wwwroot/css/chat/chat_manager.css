@@ -28,8 +28,9 @@ body {
 }
 
 .chat_window {
+    margin: 1em;
     width: calc(100% - 20px);
-    height: 500px;
+    height: 561px;
     border-radius: 10px;
     background-color: #fff;
     left: 50%;
@@ -40,7 +41,7 @@ body {
 }
 
 .top_menu {
-    background-color: #fff;
+    background: #45b6d7;
     width: 100%;
     padding: 20px 0 15px;
     box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
@@ -73,18 +74,19 @@ body {
             }
 
     .top_menu .title {
+        color: white;
         text-align: center;
-        color: #bcbdc0;
         font-size: 20px;
     }
 
 .messages {
+    background: #9adaec69;
     position: relative;
     list-style: none;
     padding: 20px 10px 0 10px;
     margin: 0;
-    height: 347px;
-    overflow: scroll;
+    height: 72%;
+    overflow: auto;
 }
 
     .messages .message {
