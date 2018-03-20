@@ -34,6 +34,7 @@ form {
 }
 
 form .svgContainer {
+    z-index: 1;
     position: relative;
     width: 200px;
     height: 200px;
