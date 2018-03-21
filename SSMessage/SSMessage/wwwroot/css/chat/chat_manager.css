@@ -122,14 +122,14 @@ body {
         }
 
         .messages .message.right .text_wrapper {
-            background-color: #c7eafc;
+            background-color: #c7f08db0;
             margin-right: 20px;
             float: right;
         }
 
             .messages .message.right .text_wrapper::after, .messages .message.right .text_wrapper::before {
                 left: 100%;
-                border-left-color: #c7eafc;
+                border-left-color: #c7f08db0;
             }
 
         .messages .message.right .text {

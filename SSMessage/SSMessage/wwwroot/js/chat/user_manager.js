@@ -80,36 +80,6 @@ var userManager = function () {
                 }
             });
         });
-
-        hubManager.startConnection('/user', function (connection) {
-            connection.on('ConnectedAction', function (connectedUserName, connectedUserId) {
-                if (connectedUserName === currentUserName) {
-                    return;
-                }
-                else {
-                    console.log(connectedUserName + "---- Connected");
-                    addNewUser(connectedUserName, connectedUserId, actionType.Online);
-                }
-            });
-
-            connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId) {
-                if (disconnectedUserName === currentUserName) {
-                    return;
-                }
-                else {
-                    console.log(disconnectedUserName + "---- Disconnected");
-
-                    if ($("#" + disconnectedUserId).length > 0) {
-                        $("#" + disconnectedUserId).remove();
-                    }
-                }
-            });
-        }).then(function (connection) {
-            console.log('connection started');
-
-        }).catch(error => {
-            console.error(error.message);
-        });
     }
 
     var addNewUser = function (userName, userConnectionId, aType) {
@@ -135,6 +105,10 @@ var userManager = function () {
 
         $('#users').append(template);
 
+        //TODO change event hendler
+        $("#" + userConnectionId).on("click", function () {
+            sendToUserName = $(this).text();
+        });
         //TODO status
         //$('#' + userName).append('<div class="topic">' + stream.stream.channel.status + '</div>');
     }

@@ -3,10 +3,9 @@ using System.Linq;
 
 namespace SSMessage
 {
-    public class ConnectionMapping<T>
+    public class ConnectionMapping
     {
-        private readonly Dictionary<T, HashSet<string>> _connections =
-            new Dictionary<T, HashSet<string>>();
+        private readonly Dictionary<string, string> _connections = new Dictionary<string, string>();
 
         public int Count
         {
@@ -16,40 +15,31 @@ namespace SSMessage
             }
         }
 
-        public void Add(T key, string connectionId)
+        public void Add(string key, string connectionId)
         {
             lock (_connections)
             {
-                HashSet<string> connections;
-                if (!_connections.TryGetValue(key, out connections))
-                {
-                    connections = new HashSet<string>();
-                    _connections.Add(key, connections);
-                }
-
-                lock (connections)
-                {
-                    connections.Add(connectionId);
-                }
+                _connections.Add(key, connectionId);
             }
         }
 
-        public IEnumerable<string> GetConnections(T key)
+        public string GetConnection(string key)
         {
-            HashSet<string> connections;
+            string connections;
             if (_connections.TryGetValue(key, out connections))
             {
                 return connections;
             }
 
-            return Enumerable.Empty<string>();
+            return string.Empty;
         }
-
-        public void Remove(T key, string connectionId)
+        
+        public void Remove(string key, string connectionId)
         {
             lock (_connections)
             {
-                HashSet<string> connections;
+                string connections;
+
                 if (!_connections.TryGetValue(key, out connections))
                 {
                     return;
@@ -57,14 +47,14 @@ namespace SSMessage
 
                 lock (connections)
                 {
-                    connections.Remove(connectionId);
-
-                    if (connections.Count == 0)
-                    {
-                        _connections.Remove(key);
-                    }
+                    _connections.Remove(key);
                 }
             }
+        }
+
+        public Dictionary<string, string> GetAllConnections()
+        {
+            return _connections;
         }
     }
 }

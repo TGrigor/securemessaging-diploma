@@ -7,10 +7,13 @@ var messagingManager = function () {
 
     var inputMessage;
     var btnSendMessage;
+    //TODO move to user-manager.js
+    var currentUserName = "";
     var message_side = 'left';
 
-    var init = function ()
+    var init = function (userName)
     {
+        currentUserName = userName;
         inputMessage = $("#inputMessage");
         btnSendMessage = $("#btnSendMessage");
 
@@ -43,9 +46,45 @@ var messagingManager = function () {
                 // Html encode display name and message.
                 addMessage(message, messageType.Incoming);
                 deleteMeesageBox();
-            });           
-        })
-            .then(function (connection) {
+            });        
+            //TODO move to user-manager.js and corrected code
+            connection.on('ConnectedAction', function (connectedUserName, connectedUserId, allConnectedUsers)
+            {
+                var existingUsers = $(".user");
+                existingUsers.remove();
+
+                $.each(allConnectedUsers, function (key, value)
+                {
+                    if (key !== currentUserName)
+                    {
+                        userManager.addNewUser(key, value, actionType.Online);
+                    }
+                });
+
+                if (connectedUserName === currentUserName)
+                {
+                    return;
+                }
+                else
+                {
+                    console.log(connectedUserName + "---- Connected");
+                    //TODO after added new function for gettiing all users uncomment this field
+                    //userManager.addNewUser(connectedUserName, connectedUserId, actionType.Online);
+                }
+            });
+
+            connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId) {
+                if (disconnectedUserName === currentUserName) {
+
+                }
+                else {
+                    console.log(disconnectedUserName + "---- Disconnected");
+                    if ($("#" + disconnectedUserId).length > 0) {
+                        $("#" + disconnectedUserId).remove();
+                    }
+                }
+            });
+        }).then(function (connection) {
                 console.log('connection started');
                 btnSendMessage.on('click', function (event) {
                     // Call the Send method on the hub.
