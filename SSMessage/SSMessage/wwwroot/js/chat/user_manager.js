@@ -107,6 +107,7 @@ var userManager = function () {
 
         //TODO change event hendler
         $("#" + userConnectionId).on("click", function () {
+            aesManager.setKey(prompt("Please enter Key for encrypt your message!", ""));
             sendToUserName = $(this).text();
         });
         //TODO status

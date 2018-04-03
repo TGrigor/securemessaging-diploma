@@ -2,10 +2,13 @@
 <script src="~/js/chat/chat_messaging.js"></script>
 <script src="~/js/signalr/signalr-client-1.0.0-alpha2-final.js"></script>
 <script src="~/js/signalr/signalr-msgpackprotocol-1.0.0-alpha2-final.js"></script>
+<script src="~/js/crypto/crypto-js.min.js"></script>
+<script src="~/js/crypto/aes_manager.js"></script>
 <script>
     $(document).ready(function ()
     {
         messagingManager.init("@User.Identity.Name");
+        aesManager.init();
     });
 </script>
 

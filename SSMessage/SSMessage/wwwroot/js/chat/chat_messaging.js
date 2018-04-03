@@ -42,9 +42,11 @@ var messagingManager = function () {
         hubManager.startConnection('/chat', function (connection)
         {
             // Create a function that the hub can call to broadcast messages.
-            connection.on('broadcastMessage', function (fromUserName, message) {
+            connection.on('broadcastMessage', function (fromUserName, message)
+            {
+                var decryptedMessage = aesManager.decrypt(message);
                 // Html encode display name and message.
-                addMessage(message, messageType.Incoming);
+                addMessage(decryptedMessage, messageType.Incoming);
                 deleteMeesageBox();
             });        
             //TODO move to user-manager.js and corrected code
@@ -73,30 +75,38 @@ var messagingManager = function () {
                 }
             });
 
-            connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId) {
-                if (disconnectedUserName === currentUserName) {
+            connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId)
+            {
+                if (disconnectedUserName === currentUserName)
+                {
 
                 }
-                else {
+                else
+                {
                     console.log(disconnectedUserName + "---- Disconnected");
-                    if ($("#" + disconnectedUserId).length > 0) {
+                    if ($("#" + disconnectedUserId).length > 0)
+                    {
                         $("#" + disconnectedUserId).remove();
                     }
                 }
             });
-        }).then(function (connection) {
+        }).then(function (connection)
+        {
                 console.log('connection started');
-                btnSendMessage.on('click', function (event) {
+                btnSendMessage.on('click', function (event)
+                {
+                    var encryptedMessage = aesManager.encrypt(inputMessage.val());
+
                     // Call the Send method on the hub.
-                    connection.invoke('send', userManager.getSendToUserName(), inputMessage.val());
+                    connection.invoke('send', userManager.getSendToUserName(), encryptedMessage);
 
                     deleteMeesageBox();
                     event.preventDefault();
                 });
-            })
-            .catch(error => {
-                console.error(error.message);
-            });
+        }).catch(error =>
+           {
+               console.error(error.message);
+           });
     }
 
     //Message class Template
