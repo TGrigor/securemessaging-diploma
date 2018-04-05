@@ -10,6 +10,7 @@ var messagingManager = function () {
     //TODO move to user-manager.js
     var currentUserName = "";
     var message_side = 'left';
+    var conn;
 
     var init = function (userName)
     {
@@ -48,7 +49,12 @@ var messagingManager = function () {
                 // Html encode display name and message.
                 addMessage(decryptedMessage, messageType.Incoming);
                 deleteMeesageBox();
-            });        
+            });    
+            connection.on('ChatRequest', function (fromUserName)
+            {
+                aesManager.setKey(prompt("Please enter Key for start new encrypted tunnel!"));
+                userManager.setSendToUserName(fromUserName);
+            });    
             //TODO move to user-manager.js and corrected code
             connection.on('ConnectedAction', function (connectedUserName, connectedUserId, allConnectedUsers)
             {
@@ -92,6 +98,7 @@ var messagingManager = function () {
             });
         }).then(function (connection)
         {
+                conn = connection;
                 console.log('connection started');
                 btnSendMessage.on('click', function (event)
                 {
@@ -133,6 +140,11 @@ var messagingManager = function () {
         return inputMessage.val();
     }
 
+    //TODO: change location to hub manager!
+    var getConnection = function () {
+        return conn;
+    }
+
     var addMessage = function (text, mType) {
         var $messages, message;
         //RegX
@@ -167,6 +179,7 @@ var messagingManager = function () {
     }
     
     return {
-        init: init
+        init: init,
+        getConnection: getConnection
     }
 }();

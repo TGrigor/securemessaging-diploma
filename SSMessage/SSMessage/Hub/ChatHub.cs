@@ -15,10 +15,18 @@ namespace SSMessage
 
         public void Send(string toUserName, string message)
         {
-            string fromUserName = Context.User.Identity.Name;
+            string fromUserName =  Context.User.Identity.Name;
             string connectionId = _connections.GetConnection(toUserName);
 
             Clients.Client(connectionId).InvokeAsync("broadcastMessage", fromUserName, message);
+        }
+
+        public void ChatRequest(string userNameTo)
+        {
+            string fromUserName = Context.User.Identity.Name;
+            string connectionId = _connections.GetConnection(userNameTo);
+
+            Clients.Client(connectionId).InvokeAsync("ChatRequest", fromUserName);
         }
 
         //TODO move to UserHub.cs

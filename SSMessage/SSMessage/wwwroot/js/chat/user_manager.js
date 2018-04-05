@@ -106,9 +106,11 @@ var userManager = function () {
         $('#users').append(template);
 
         //TODO change event hendler
-        $("#" + userConnectionId).on("click", function () {
+        $("#" + userConnectionId).on("click", function ()
+        {
             aesManager.setKey(prompt("Please enter Key for encrypt your message!", ""));
             sendToUserName = $(this).text();
+            messagingManager.getConnection().invoke('ChatRequest', sendToUserName);;
         });
         //TODO status
         //$('#' + userName).append('<div class="topic">' + stream.stream.channel.status + '</div>');
@@ -118,9 +120,14 @@ var userManager = function () {
         return sendToUserName;
     }
 
+    var setSendToUserName = (userName) => {
+        sendToUserName = userName;
+    }
+
     return {
         init: init,
         addNewUser: addNewUser,
-        getSendToUserName: getSendToUserName
+        getSendToUserName: getSendToUserName,
+        setSendToUserName: setSendToUserName
     }
 }();
