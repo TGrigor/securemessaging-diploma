@@ -9,8 +9,6 @@ var userManager = function ()
     var sendToUserName;
     var currentUserName;
 
-    var name, logo, streaming;
-
     //Events
     var init = function (userName) {
         userList = $(".user");
@@ -86,7 +84,9 @@ var userManager = function ()
     }
 
     //Methods
-    var addNewUser = function (userName, userConnectionId, aType) {
+    var addNewUser = function (userName, userConnectionId, aType)
+    {
+        var streaming;
         switch (aType) {
             case actionType.Online:
                 streaming = '<span class="mega-octicon octicon-check status online"></span>';

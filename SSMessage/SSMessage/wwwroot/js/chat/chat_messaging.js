@@ -3,12 +3,13 @@
     Incoming: 1
 }
 
-var messagingManager = function () {
-
+var messagingManager = function ()
+{
     var inputMessage;
     var btnSendMessage;
     var message_side = 'left';
 
+    //Events
     var init = function (userName)
     {
         inputMessage = $("#inputMessage");
@@ -16,7 +17,6 @@ var messagingManager = function () {
 
         load();
     }
-
     var load = function () {
         //Focus to textarea
         inputMessage.focus();
@@ -26,7 +26,6 @@ var messagingManager = function () {
         {
             return addMessage(getMessageText(), messageType.Outgoing);
         });
-
         btnSendMessage.on('click', function (event)
         {
             var encryptedMessage = aesManager.encrypt(inputMessage.val());
@@ -50,7 +49,8 @@ var messagingManager = function () {
     }
 
     //Message class Template
-    var Message = function ({ text: text1, message_side: message_side1 }) {
+    var Message = function ({ text: text1, message_side: message_side1 })
+    {
         this.text = text1;
         this.message_side = message_side1;
         this.draw = () => {
@@ -72,9 +72,9 @@ var messagingManager = function () {
     var getMessageText = function () {
         return inputMessage.val();
     }
-
     var addMessage = function (text, mType) {
         var $messages, message;
+
         //RegX
         //text = text.replace(/.{10}\S*\s+/g, "$&@").split(/\s+@/)
 
@@ -99,7 +99,6 @@ var messagingManager = function () {
             scrollTop: $messages.prop('scrollHeight')
         }, 300);
     }
-
     var deleteMeesageBox = function () {
         // Clear text box and reset focus for next comment.
         inputMessage.val("");

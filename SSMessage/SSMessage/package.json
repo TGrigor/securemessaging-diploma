@@ -3,5 +3,7 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "crypt-js": "1.0.4"
+  }
 }

@@ -1,14 +1,20 @@
 ﻿<link href="~/css/chat/chat_manager.css" rel="stylesheet" />
+<link href="~/css/chat/chat_messaging.css" rel="stylesheet" />
+<link href="~/css/chat/chat_users.css" rel="stylesheet" />
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/chat/hub_manager.js"></script>
 <script src="~/js/chat/chat_manager.js"></script>
+<script src="~/js/chat/chat_messaging.js"></script>
+<script src="~/js/chat/hub_manager.js"></script>
+<script src="~/js/signalr/signalr-client-1.0.0-alpha2-final.js"></script>
+<script src="~/js/signalr/signalr-msgpackprotocol-1.0.0-alpha2-final.js"></script>
+<script src="~/js/crypto/crypto-js.min.js"></script>
+<script src="~/js/crypto/aes_manager.js"></script>
+<script src="~/js/chat/user_manager.js"></script>
 
 <script>
-    $(document).ready(function ()
-    {
-        hubManager.init();
-        aesManager.init();
-        chatManager.init();
+    $(document).ready(function () {
+        chatManager.init("@User.Identity.Name");
     });
 </script>
 @{
@@ -22,6 +28,5 @@
     </div>
     <div class="chat-user-content">
         @Html.Partial("~/Views/Chat/_ChatUsers.cshtml")
-
     </div>
 </div>
