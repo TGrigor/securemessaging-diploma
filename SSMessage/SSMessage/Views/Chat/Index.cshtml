@@ -4,7 +4,10 @@
 <script src="~/js/chat/chat_manager.js"></script>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function ()
+    {
+        hubManager.init();
+        aesManager.init();
         chatManager.init();
     });
 </script>

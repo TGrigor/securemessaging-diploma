@@ -3,21 +3,24 @@
     Offline: 1
 }
 
-var userManager = function () {
+var userManager = function ()
+{
     var userList;
     var sendToUserName;
     var currentUserName;
 
     var name, logo, streaming;
 
+    //Events
     var init = function (userName) {
-        userList = $(".user-list");
+        userList = $(".user");
         currentUserName = userName;
         load();
     }
-
     var load = function () {
-        userList.on("click", function () {
+        //TODO: change
+        userList.on("click", function ()
+        {
             sendToUserName = this.text;
         });
 
@@ -82,6 +85,7 @@ var userManager = function () {
         });
     }
 
+    //Methods
     var addNewUser = function (userName, userConnectionId, aType) {
         switch (aType) {
             case actionType.Online:
@@ -110,24 +114,42 @@ var userManager = function () {
         {
             aesManager.setKey(prompt("Please enter Key for encrypt your message!", ""));
             sendToUserName = $(this).text();
-            messagingManager.getConnection().invoke('ChatRequest', sendToUserName);;
+            hubManager.getConnection().invoke('ChatRequest', sendToUserName);
         });
         //TODO status
         //$('#' + userName).append('<div class="topic">' + stream.stream.channel.status + '</div>');
     }
-
+    var getCurrentUserName = () => {
+        return currentUserName;
+    }
     var getSendToUserName = () => {
         return sendToUserName;
     }
-
     var setSendToUserName = (userName) => {
         sendToUserName = userName;
     }
+    var getUsers = () => {
+        return userList;
+    }
+    var removeUsers = () => {
+        userList.remove();
+    }
+    var removeUserById = (userId) =>
+    {
+        if ($("#" + userId).length > 0)
+        {
+            $("#" + userId).remove();
+        }
+    }
 
-    return {
+    return    {
         init: init,
         addNewUser: addNewUser,
+        getCurrentUserName: getCurrentUserName,
         getSendToUserName: getSendToUserName,
-        setSendToUserName: setSendToUserName
+        getUsers: getUsers,
+        setSendToUserName: setSendToUserName,
+        removeUsers: removeUsers,
+        removeUserById: removeUserById
     }
 }();

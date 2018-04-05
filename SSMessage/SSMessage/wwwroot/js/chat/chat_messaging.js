@@ -7,14 +7,10 @@ var messagingManager = function () {
 
     var inputMessage;
     var btnSendMessage;
-    //TODO move to user-manager.js
-    var currentUserName = "";
     var message_side = 'left';
-    var conn;
 
     var init = function (userName)
     {
-        currentUserName = userName;
         inputMessage = $("#inputMessage");
         btnSendMessage = $("#btnSendMessage");
 
@@ -25,8 +21,21 @@ var messagingManager = function () {
         //Focus to textarea
         inputMessage.focus();
 
-        btnSendMessage.click(function (e) {
+        //TODO : marge events
+        btnSendMessage.click(function (e)
+        {
             return addMessage(getMessageText(), messageType.Outgoing);
+        });
+
+        btnSendMessage.on('click', function (event)
+        {
+            var encryptedMessage = aesManager.encrypt(inputMessage.val());
+
+            // Call the Send method on the hub.
+            hubManager.getConnection().invoke('send', userManager.getSendToUserName(), encryptedMessage);
+
+            deleteMeesageBox();
+            event.preventDefault();
         });
 
         // Enter key event for input
@@ -37,83 +46,7 @@ var messagingManager = function () {
                 btnSendMessage.click();
                 return addMessage(getMessageText(), messageType.Outgoing);
             }
-        });
-
-        // Start the connection.
-        hubManager.startConnection('/chat', function (connection)
-        {
-            // Create a function that the hub can call to broadcast messages.
-            connection.on('broadcastMessage', function (fromUserName, message)
-            {
-                var decryptedMessage = aesManager.decrypt(message);
-                // Html encode display name and message.
-                addMessage(decryptedMessage, messageType.Incoming);
-                deleteMeesageBox();
-            });    
-            connection.on('ChatRequest', function (fromUserName)
-            {
-                aesManager.setKey(prompt("Please enter Key for start new encrypted tunnel!"));
-                userManager.setSendToUserName(fromUserName);
-            });    
-            //TODO move to user-manager.js and corrected code
-            connection.on('ConnectedAction', function (connectedUserName, connectedUserId, allConnectedUsers)
-            {
-                var existingUsers = $(".user");
-                existingUsers.remove();
-
-                $.each(allConnectedUsers, function (key, value)
-                {
-                    if (key !== currentUserName)
-                    {
-                        userManager.addNewUser(key, value, actionType.Online);
-                    }
-                });
-
-                if (connectedUserName === currentUserName)
-                {
-                    return;
-                }
-                else
-                {
-                    console.log(connectedUserName + "---- Connected");
-                    //TODO after added new function for gettiing all users uncomment this field
-                    //userManager.addNewUser(connectedUserName, connectedUserId, actionType.Online);
-                }
-            });
-
-            connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId)
-            {
-                if (disconnectedUserName === currentUserName)
-                {
-
-                }
-                else
-                {
-                    console.log(disconnectedUserName + "---- Disconnected");
-                    if ($("#" + disconnectedUserId).length > 0)
-                    {
-                        $("#" + disconnectedUserId).remove();
-                    }
-                }
-            });
-        }).then(function (connection)
-        {
-                conn = connection;
-                console.log('connection started');
-                btnSendMessage.on('click', function (event)
-                {
-                    var encryptedMessage = aesManager.encrypt(inputMessage.val());
-
-                    // Call the Send method on the hub.
-                    connection.invoke('send', userManager.getSendToUserName(), encryptedMessage);
-
-                    deleteMeesageBox();
-                    event.preventDefault();
-                });
-        }).catch(error =>
-           {
-               console.error(error.message);
-           });
+        });       
     }
 
     //Message class Template
@@ -138,11 +71,6 @@ var messagingManager = function () {
 
     var getMessageText = function () {
         return inputMessage.val();
-    }
-
-    //TODO: change location to hub manager!
-    var getConnection = function () {
-        return conn;
     }
 
     var addMessage = function (text, mType) {
@@ -180,6 +108,7 @@ var messagingManager = function () {
     
     return {
         init: init,
-        getConnection: getConnection
+        addMessage: addMessage,
+        deleteMeesageBox: deleteMeesageBox
     }
 }();
