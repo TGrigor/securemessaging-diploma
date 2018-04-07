@@ -1,0 +1,23 @@
+﻿<script src="~/js/recorder/recorder_manager.js"></script>
+
+<script>
+    $(document).ready(function () {
+        recorderManager.init();
+    });
+</script>
+
+<video id='video' autoplay></video>
+<div>
+    <button id='request'>
+        Request Camera
+    </button>
+    <button id='start'>
+        Start Recording
+    </button>
+    <button id='stop'>
+        Stop Recording
+    </button>
+    <ul id='ul'>
+        Downloads List:
+    </ul>
+</div>
