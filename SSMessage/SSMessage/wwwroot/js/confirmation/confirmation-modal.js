@@ -1,51 +1,65 @@
-var confirmationManager = function () {
+var confirmationManager = function ()
+{
+    var parentModalId;
+    var $parrentModal;
+    var modal;
 
-    var init = function () {
+    var init = function (modalId)
+    {
         //Initialisation
-
+        parentModalId = modalId;
+        $parrentModal = $("#" + parentModalId);
+        modal = $('#modalExit');
         //Events
         load();
     }
 
-    var load = function () {
+    var load = function ()
+    {
+        $parrentModal.hide();
         //TODO Loading icon
         //alert("Loading...");
-        displayModal();
         closeModal();
     }
-
-    var displayModal = function ()
+    var addModalEvent = function (selector)
     {
-        var modal = document.querySelector('#modalExit');
-        var button = document.querySelector('#button');
-
-        button.addEventListener('click', function (e) {
+        selector.on('click', function (e)
+        {
             e.preventDefault();
 
-            if (modal.classList.contains('showtime') === false) {
-                modal.classList.add('showtime');
-            } else {
+            $parrentModal.show();
+
+            $("#" + parentModalId + "_box").text(" " + $(this).text());
+            debugger;
+            if (modal.hasClass("showtime") === false)
+            {
+                modal.addClass("showtime");
+            }
+            else
+            {
                 return;
             }
         });
     }
+     
 
     var closeModal = function ()
     {
-        var modal = document.querySelector('#modalExit');
+        modal.on('click', function (e)
+        {
+            $parrentModal.hide();
 
-        modal.addEventListener('click', function (e) {
             e.preventDefault();
-
-            if (e.target.id === "modalCancel" || e.target.id === "modalConfirm") {
-                modal.classList.remove('showtime');
+            if (e.target.id === "modalCancel" || e.target.id === "modalConfirm")
+            {
+                modal.removeClass("showtime");
             }
         });
     }
 
     return {
         init: init,
-        displayModal: displayModal,
+        addModalEvent: addModalEvent,
         closeModal: closeModal
     }
 }();

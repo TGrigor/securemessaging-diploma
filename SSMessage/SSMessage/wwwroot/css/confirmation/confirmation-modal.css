@@ -20,14 +20,16 @@
     }
 
     .confirmation-modal .modal-exit {
+        border-radius: 20px;
+        width: 99%;
+        margin: 1em;
+        display: inline-block;
         background-color: #f2f2f2;
         border-radius: 4px;
         border: 1px solid #dcdcdc;
         box-shadow: 0px 0px 72px rgba(0, 0, 0, 0.18);
         box-sizing: border-box;
         color: #484848;
-        display: inline-block;
-        max-width: 360px;
         opacity: 0;
         transform: translateY(24px);
         transition: transform 0.14s, opacity 0.14s ease-in-out;

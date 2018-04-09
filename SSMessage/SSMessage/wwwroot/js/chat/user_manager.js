@@ -108,14 +108,14 @@ var userManager = function ()
         template += streaming;
 
         $('#users').append(template);
-
+        confirmationManager.addModalEvent($("#" + userConnectionId));
         //TODO change event hendler
-        $("#" + userConnectionId).on("click", function ()
-        {
-            aesManager.setKey(prompt("Please enter Key for encrypt your message!", ""));
-            sendToUserName = $(this).text();
-            hubManager.getConnection().invoke('ChatRequest', sendToUserName);
-        });
+            $("#" + userConnectionId).on("click", function ()
+            {
+                aesManager.setKey(prompt("Please enter Key for encrypt your message!", ""));
+                sendToUserName = $(this).text();
+                hubManager.getConnection().invoke('ChatRequest', sendToUserName);
+            });
         //TODO status
         //$('#' + userName).append('<div class="topic">' + stream.stream.channel.status + '</div>');
     }

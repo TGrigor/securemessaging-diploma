@@ -22,6 +22,17 @@
 }
 
 <div class="chat-content">
+    @if (true)
+    {
+        @Html.Partial("~/Views/Partial/_Confirmation.cshtml",
+            new ConfirmationViewModel
+            {
+                ConfirmationTypeId = "user_confirmation",
+                ConfirmationTypeName = "Connection Request",
+                ConfirmationDescription = "You start a new conversation with"
+            })
+    }
+
     <div class="chat-message-content">
         @Html.Partial("~/Views/Chat/_ChatMessage.cshtml")
     </div>
@@ -35,10 +46,5 @@
         <div class="glyphicon-hd-video video-recorder">
             @Html.Partial("~/Views/Partial/_Recorder.cshtml")
         </div>
-    }
-
-    @if (false)
-    {
-        @Html.Partial("~/Views/Partial/_Confirmation.cshtml")
     }
 </div>
