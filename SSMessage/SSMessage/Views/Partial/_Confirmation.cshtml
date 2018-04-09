@@ -1,0 +1,30 @@
+﻿<link href="~/css/confirmation/confirmation-modal.css" rel="stylesheet" />
+
+<script>
+    $(document).ready(function () {
+        confirmationManager.init();
+    });
+</script>
+
+
+<div id="button" class="button">Click me!</div>
+<div class="confirmation-modal">
+    <div id="modalExit" class="modal-exit">
+        <div class="modal-exit-content">
+            <div class="modal-exit-title">
+                Delete Selected?
+            </div>
+            <div class="modal-exit-desc">
+                Are you sure you wish to delete your selection? This action cannot be undone.
+            </div>
+        </div>
+        <div id="modalCancel" class="modal-exit-button">
+            Cancel
+        </div>
+        <div id="modalConfirm" class="modal-exit-button">
+            Confirm
+        </div>
+    </div>
+</div>
+
+<script src="~/js/confirmation/confirmation-modal.js"></script>

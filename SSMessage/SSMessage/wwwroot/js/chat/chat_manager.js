@@ -6,6 +6,7 @@
         hubManager.init();
         aesManager.init();
         messagingManager.init();
+        confirmationManager.init();
         userManager.init(userName);
     }
 

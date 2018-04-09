@@ -11,7 +11,6 @@
 <script src="~/js/crypto/crypto-js.min.js"></script>
 <script src="~/js/crypto/aes_manager.js"></script>
 <script src="~/js/chat/user_manager.js"></script>
-
 <script>
     $(document).ready(function () {
         chatManager.init("@User.Identity.Name");
@@ -29,13 +28,17 @@
     <div class="chat-user-content">
         @Html.Partial("~/Views/Chat/_ChatUsers.cshtml")
     </div>
-    
+
     @if (false)
     {
         //TODO delete "if" when finish task
         <div class="glyphicon-hd-video video-recorder">
-            @Html.Partial("~/Views/Recorder/_Recorder.cshtml")
+            @Html.Partial("~/Views/Partial/_Recorder.cshtml")
         </div>
     }
 
+    @if (false)
+    {
+        @Html.Partial("~/Views/Partial/_Confirmation.cshtml")
+    }
 </div>
