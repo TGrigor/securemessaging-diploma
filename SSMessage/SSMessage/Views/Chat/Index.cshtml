@@ -24,13 +24,7 @@
 <div class="chat-content">
     @if (true)
     {
-        @Html.Partial("~/Views/Partial/_Confirmation.cshtml",
-            new ConfirmationViewModel
-            {
-                ConfirmationTypeId = "user_confirmation",
-                ConfirmationTypeName = "Connection Request",
-                ConfirmationDescription = "You start a new conversation with"
-            })
+        @Html.Partial("~/Views/Partial/_Confirmation.cshtml")       
     }
 
     <div class="chat-message-content">

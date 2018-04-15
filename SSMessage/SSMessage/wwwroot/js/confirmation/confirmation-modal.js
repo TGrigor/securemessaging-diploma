@@ -2,18 +2,18 @@ var confirmationManager = function ()
 {
     var parentModalId;
     var $parrentModal;
+    var messageBox;
     var modal;
 
-    var init = function (modalId)
+    var init = function ()
     {
         //Initialisation
-        parentModalId = modalId;
-        $parrentModal = $("#" + parentModalId);
+        $parrentModal = $("#user_confirmation");
+        messageBox = $("#user_confirmation_box");
         modal = $('#modalExit');
         //Events
         load();
     }
-
     var load = function ()
     {
         $parrentModal.hide();
@@ -21,6 +21,7 @@ var confirmationManager = function ()
         //alert("Loading...");
         closeModal();
     }
+
     var addModalEvent = function (selector)
     {
         selector.on('click', function (e)
@@ -29,8 +30,8 @@ var confirmationManager = function ()
 
             $parrentModal.show();
 
-            $("#" + parentModalId + "_box").text(" " + $(this).text());
-            debugger;
+            messageBox.text(" " + $(this).text());
+
             if (modal.hasClass("showtime") === false)
             {
                 modal.addClass("showtime");
@@ -41,8 +42,6 @@ var confirmationManager = function ()
             }
         });
     }
-     
-
     var closeModal = function ()
     {
         modal.on('click', function (e)

@@ -4,15 +4,15 @@
 
 <script>
     $(document).ready(function () {
-        confirmationManager.init("@Model.ConfirmationTypeId");
+        confirmationManager.init();
     });
 </script>
 
-<div id="@Model.ConfirmationTypeId" class="confirmation-modal">
+<div id="user_confirmation" class="confirmation-modal">
     <div id="modalExit" class="modal-exit">
         <div class="modal-exit-content">
-            <div class="modal-exit-title">@Model.ConfirmationTypeName</div>
-            <div class="modal-exit-desc">@Model.ConfirmationDescription<span id="@String.Format("{0}_box",Model.ConfirmationTypeId)"></span></div>
+            <div class="modal-exit-title">Connection Request</div>
+            <div class="modal-exit-desc">You start a new conversation with<span id="user_confirmation_box"></span></div>
         </div>
         <div id="modalCancel" class="modal-exit-button">
             Cancel
