@@ -29,6 +29,22 @@ namespace SSMessage
             Clients.Client(connectionId).InvokeAsync("ChatRequest", fromUserName);
         }
 
+        public void ConfirmRequest(string userNameTo)
+        {
+            string fromUserName = Context.User.Identity.Name;
+            string connectionId = _connections.GetConnection(userNameTo);
+
+            Clients.Client(connectionId).InvokeAsync("ChatRequest", fromUserName);
+        }
+
+        public void CancelRequest(string userNameTo)
+        {
+            string fromUserName = Context.User.Identity.Name;
+            string connectionId = _connections.GetConnection(userNameTo);
+
+            Clients.Client(connectionId).InvokeAsync("ChatRequest", fromUserName);
+        }
+
         //TODO move to UserHub.cs
         public override Task OnConnectedAsync()
         {

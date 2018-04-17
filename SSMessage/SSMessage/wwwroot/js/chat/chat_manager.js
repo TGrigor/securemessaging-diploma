@@ -8,6 +8,7 @@
         messagingManager.init();
         confirmationManager.init();
         userManager.init(userName);
+        connectingManager.init();
     }
 
     var load = function ()

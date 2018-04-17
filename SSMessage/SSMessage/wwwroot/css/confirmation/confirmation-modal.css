@@ -1,5 +1,6 @@
 .confirmation-modal {
     font-family: "Helvetica";
+    display: none;
 }
 
     .confirmation-modal .button {

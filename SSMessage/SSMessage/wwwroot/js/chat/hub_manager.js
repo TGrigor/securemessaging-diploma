@@ -22,11 +22,20 @@
 
                 messagingManager.deleteMeesageBox();
             });
+
+            //Confirmation modal section
             connection.on('ChatRequest', function (fromUserName)
             {
                 confirmationManager.hideAndResetModal();
+                confirmationManager.setConfirmationType(confirmationType.Incoming);
                 confirmationManager.showModal(fromUserName);
                 userManager.setSendToUserName(fromUserName);
+            });
+
+            connection.on('ConfirmRequest', function (fromUserName) {
+            });
+
+            connection.on('CancelRequest', function (fromUserName) {
             });
 
             //TODO move to user-manager.js and corrected code
