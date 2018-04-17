@@ -167,3 +167,6 @@
         color: #de4415;
         margin: 0 0.5em 0 1em;
     }
+    .chat-users .user {
+        cursor: pointer;
+    }

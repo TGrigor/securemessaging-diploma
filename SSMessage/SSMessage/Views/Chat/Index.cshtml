@@ -19,13 +19,11 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+} 
+
+@Html.Partial("~/Views/Partial/_Confirmation.cshtml")
 
 <div class="chat-content">
-    @if (true)
-    {
-        @Html.Partial("~/Views/Partial/_Confirmation.cshtml")       
-    }
 
     <div class="chat-message-content">
         @Html.Partial("~/Views/Chat/_ChatMessage.cshtml")

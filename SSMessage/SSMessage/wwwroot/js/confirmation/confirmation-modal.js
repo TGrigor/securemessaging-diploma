@@ -3,63 +3,76 @@ var confirmationManager = function ()
     var parentModalId;
     var $parrentModal;
     var messageBox;
-    var modal;
+    var inputKeyForEncryption;
+    var modalConfirm, modalCancel;
 
     var init = function ()
     {
         //Initialisation
         $parrentModal = $("#user_confirmation");
         messageBox = $("#user_confirmation_box");
-        modal = $('#modalExit');
+        inputKeyForEncryption = $("#key_ForEncryption");
+
+        modalConfirm = $("#modalConfirm");
+        modalCancel = $("#modalCancel");
+
         //Events
         load();
     }
     var load = function ()
     {
         $parrentModal.hide();
-        //TODO Loading icon
-        //alert("Loading...");
-        closeModal();
-    }
 
-    var addModalEvent = function (selector)
-    {
-        selector.on('click', function (e)
+        modalConfirm.on('click', function ()
         {
-            e.preventDefault();
+            confirmModal();
+        });
 
-            $parrentModal.show();
-
-            messageBox.text(" " + $(this).text());
-
-            if (modal.hasClass("showtime") === false)
-            {
-                modal.addClass("showtime");
-            }
-            else
-            {
-                return;
-            }
+        modalCancel.on('click', function ()
+        {
+            cancelModal();
         });
     }
-    var closeModal = function ()
-    {
-        modal.on('click', function (e)
-        {
-            $parrentModal.hide();
 
-            e.preventDefault();
-            if (e.target.id === "modalCancel" || e.target.id === "modalConfirm")
-            {
-                modal.removeClass("showtime");
-            }
+    var addShowModalEvent = function (selector)
+    {
+        selector.on('click', function ()
+        {
+           showModal($(this).text());
         });
+    }
+
+    var confirmModal = function ()
+    {
+        //TODO validate input 
+        aesManager.setKey(inputKeyForEncryption.val());
+        hubManager.getConnection().invoke('ChatRequest', userManager.getSendToUserName());
+    }
+
+    var cancelModal = function ()
+    {
+        hideAndResetModal();
+    }
+
+    var showModal = function (userName)
+    {
+        userManager.setSendToUserName(userName);
+        messageBox.text(" " + userName);
+        $parrentModal.show();
+    }
+
+    var hideAndResetModal = function ()
+    {
+        $parrentModal.hide();
+        inputKeyForEncryption.val("");
+        messageBox.text("");
     }
 
     return {
         init: init,
-        addModalEvent: addModalEvent,
-        closeModal: closeModal
+        addShowModalEvent: addShowModalEvent,
+        showModal: showModal,
+        hideAndResetModal: hideAndResetModal
     }
 }();
 

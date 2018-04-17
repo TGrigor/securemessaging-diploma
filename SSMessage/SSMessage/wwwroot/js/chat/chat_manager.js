@@ -16,7 +16,7 @@
         //alert("Loading...");
     }
     
-    return {
+    return{
         init: init
     }
 }();

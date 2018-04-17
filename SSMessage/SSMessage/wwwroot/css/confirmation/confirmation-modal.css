@@ -63,7 +63,7 @@
         line-height: 1.6;
     }
 
-    .confirmation-modal .modal-exit-button {
+    .confirmation-modal .modal-button {
         -webkit-font-smoothing: antialiased;
         border-right: 1px solid #dcdcdc;
         border-top: 1px solid #dcdcdc;
@@ -81,11 +81,11 @@
         width: 50%;
     }
 
-        .confirmation-modal .modal-exit-button:last-child {
+        .confirmation-modal .modal-button:last-child {
             border-right: none;
         }
 
-        .confirmation-modal .modal-exit-button:hover {
+        .confirmation-modal .modal-button:hover {
             background-color: #fff;
             color: #121212;
         }

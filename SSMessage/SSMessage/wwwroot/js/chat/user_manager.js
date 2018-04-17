@@ -97,25 +97,22 @@ var userManager = function ()
         }
 
         var template = '<div class="user" id="' + userConnectionId + '">';
+        //change picture
         template += '<img src="http://www-cdn.jtvnw.net/images/xarth/404_user_150x150.png" class="logo">';
-        template += '<a href="" target="_blank">';
         template += '<span class="name">';
         template += userName;
         template += '</span>';
-        template += '</a>';
         template += '<input type="hidden" value="' + userConnectionId + '">'
         template += '</div>'
         template += streaming;
 
         $('#users').append(template);
-        confirmationManager.addModalEvent($("#" + userConnectionId));
+        confirmationManager.addShowModalEvent($("#" + userConnectionId));
         //TODO change event hendler
-            $("#" + userConnectionId).on("click", function ()
-            {
-                aesManager.setKey(prompt("Please enter Key for encrypt your message!", ""));
-                sendToUserName = $(this).text();
-                hubManager.getConnection().invoke('ChatRequest', sendToUserName);
-            });
+        $("#" + userConnectionId).on("click", function ()
+        {
+           
+        });
         //TODO status
         //$('#' + userName).append('<div class="topic">' + stream.stream.channel.status + '</div>');
     }

@@ -24,7 +24,8 @@
             });
             connection.on('ChatRequest', function (fromUserName)
             {
-                aesManager.setKey(prompt("Please enter Key for start new encrypted tunnel!"));
+                confirmationManager.hideAndResetModal();
+                confirmationManager.showModal(fromUserName);
                 userManager.setSendToUserName(fromUserName);
             });
 
