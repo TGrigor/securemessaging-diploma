@@ -12,7 +12,8 @@ var confirmationManager = function () {
     var confirmModalType
 
     var init = function () {
-        //Initialisation
+
+        //Initialization
         $parrentModal = $("#user_confirmation");
         messageBox = $("#user_confirmation_box");
         inputKeyForEncryption = $("#key_ForEncryption");
@@ -27,7 +28,9 @@ var confirmationManager = function () {
     var load = function () {
         $parrentModal.hide();
 
+        debugger;
         modalConfirm.on('click', function () {
+            debugger;
             confirmModal(confirmModalType);
         });
 
@@ -42,11 +45,13 @@ var confirmationManager = function () {
         });
     }
 
-    var confirmModal = function (confType) {
+    var confirmModal = function (confType)
+    {
         //TODO validate input
         aesManager.setKey(inputKeyForEncryption.val());
 
-        switch (confType) {
+        switch (confType)
+        {
             case confirmationType.Outgoing:
                 connectingManager.showConnectionModal();
                 hubManager.getConnection().invoke('ChatRequest', userManager.getSendToUserName());

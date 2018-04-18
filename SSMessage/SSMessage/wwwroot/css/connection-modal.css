@@ -3,8 +3,8 @@
 .connecting {
     display: none;
     background-color: #459BF9;
-    width: 75%;
-    height: 93%;
+    width: 60%;
+    height: 67%;
     position: absolute;
     z-index: 10;
     margin: 0 auto;
