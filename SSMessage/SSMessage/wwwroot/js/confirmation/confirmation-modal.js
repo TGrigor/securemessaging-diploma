@@ -28,9 +28,7 @@ var confirmationManager = function () {
     var load = function () {
         $parrentModal.hide();
 
-        debugger;
         modalConfirm.on('click', function () {
-            debugger;
             confirmModal(confirmModalType);
         });
 
@@ -63,6 +61,7 @@ var confirmationManager = function () {
                 break;
 
             case confirmationType.Incoming:
+                hubManager.getConnection().invoke('ConfirmRequest', userManager.getSendToUserName());
                 break;
 
             default:
@@ -74,6 +73,7 @@ var confirmationManager = function () {
 
     var cancelModal = function () {
         hideAndResetModal();
+        hubManager.getConnection().invoke('CancelRequest', userManager.getSendToUserName());
     }
 
     var showModal = function (userName) {

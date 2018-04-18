@@ -34,7 +34,7 @@ namespace SSMessage
             string fromUserName = Context.User.Identity.Name;
             string connectionId = _connections.GetConnection(userNameTo);
 
-            Clients.Client(connectionId).InvokeAsync("ChatRequest", fromUserName);
+            Clients.Client(connectionId).InvokeAsync("ConfirmRequest");
         }
 
         public void CancelRequest(string userNameTo)
@@ -42,7 +42,7 @@ namespace SSMessage
             string fromUserName = Context.User.Identity.Name;
             string connectionId = _connections.GetConnection(userNameTo);
 
-            Clients.Client(connectionId).InvokeAsync("ChatRequest", fromUserName);
+            Clients.Client(connectionId).InvokeAsync("CancelRequest");
         }
 
         //TODO move to UserHub.cs

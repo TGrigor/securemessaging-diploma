@@ -234,3 +234,24 @@ body {
 .message_template {
     display: none;
 }
+
+
+
+@media screen and (max-width: 471px) {
+
+    .chat-content .chat-message-content {
+        width: 100%;
+        height: 100%;
+    }
+
+    .chat-content .chat-user-content {
+        width: 95%;
+    }
+
+    /*TODO: Change to normal code*/
+    .connecting {
+        width: 100% !important;
+        height: 100% !important;
+        right: 1px;
+    }
+}

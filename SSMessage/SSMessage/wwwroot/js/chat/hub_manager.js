@@ -17,7 +17,7 @@
             {
                 var decryptedMessage = aesManager.decrypt(message);
 
-                // Html encode display name and message.
+                // HTML encode display name and message.
                 messagingManager.addMessage(decryptedMessage, messageType.Incoming);
 
                 messagingManager.deleteMeesageBox();
@@ -33,9 +33,22 @@
             });
 
             connection.on('ConfirmRequest', function (fromUserName) {
+                //Create function in connecting manager
+                connectingManager.changeConectionStatus(statusType.Connected);
+                connectingManager.changeColor(blockSide.center, "#296c00");
+                connectingManager.changeColor(blockSide.background, "#296c00");
+                setTimeout(function () {
+                    connectingManager.hideConnectionModal();
+                }, 5000);
             });
 
             connection.on('CancelRequest', function (fromUserName) {
+                connectingManager.changeConectionStatus(statusType.Canceled);
+                connectingManager.changeColor(blockSide.center, "red");
+                connectingManager.changeColor(blockSide.background, "#d72525");
+                setTimeout(function () {
+                    connectingManager.hideConnectionModal();
+                }, 5000);
             });
 
             //TODO move to user-manager.js and corrected code

@@ -6,7 +6,8 @@ var statusType = {
 var blockSide = {
     right: 0,
     left: 1,
-    center: 2
+    center: 2,
+    background: 3
 }
 
 var connectingManager = function () {
@@ -17,13 +18,12 @@ var connectingManager = function () {
 
     var init = function ()
     {
-        //Initialisation
+        //Initialization
         connModal = $(".connecting")
-        connectingStatusText = $("#text-box-conection-status");
+        connectingStatusText = $("#text-box-connection-status");
         leftConnectionBlock = $(".left-connection-block");
         rightConnectionBlock = $(".right-connection-block");
         centerLine = $(".con");
-
         //Events
         load();
     }
@@ -38,7 +38,7 @@ var connectingManager = function () {
                 //Color green
                 break;
             case statusType.Canceled:
-                connectingStatusText.text("User cancele request!");
+                connectingStatusText.text("User cancel request!");
                 //Color red
                 break;
         }
@@ -59,7 +59,17 @@ var connectingManager = function () {
                 centerLine.css("color", color);
                 centerLine.css("background", color);
                 break;
+            case blockSide.background:
+                connModal.css("background", color);
+                break;
         }
+    }
+
+    var resetConnectionModal = function ()
+    {
+        connectingStatusText.text("CONNECTING");
+        changeColor(blockSide.center, "white")
+        changeColor(blockSide.background, "#459BF9")
     }
 
     var showConnectionModal = () => {
@@ -68,6 +78,7 @@ var connectingManager = function () {
 
     var hideConnectionModal = () => {
         connModal.hide();
+        resetConnectionModal();
     }
 
     return {
