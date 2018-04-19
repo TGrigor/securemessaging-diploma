@@ -51,7 +51,7 @@ var messagingManager = function ()
     //Message class Template
     var Message = function ({ text: text1, message_side: message_side1 })
     {
-        this.text = text1;
+        this.text = strip(text1);
         this.message_side = message_side1;
         this.draw = () => {
             var $message;

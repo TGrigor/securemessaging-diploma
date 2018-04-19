@@ -10,7 +10,8 @@ var userManager = function ()
     var currentUserName;
 
     //Events
-    var init = function (userName) {
+    var init = function (userName)
+    {
         userList = $(".user");
         currentUserName = userName;
         load();
@@ -126,10 +127,11 @@ var userManager = function ()
         sendToUserName = userName;
     }
     var getUsers = () => {
-        return userList;
+        return $(".user");
     }
     var removeUsers = () => {
-        userList.remove();
+        debugger;
+        $(".user").remove();
     }
     var removeUserById = (userId) =>
     {

@@ -48,6 +48,7 @@ var confirmationManager = function () {
     {
         //TODO validate input
         aesManager.setKey(inputKeyForEncryption.val());
+        //TODO Change the logic when my brain will returns
         hubManager.getConnection().invoke('CancelRequest', userManager.getSendToUserName());
         userManager.setSendToUserName(requestedBy);
 

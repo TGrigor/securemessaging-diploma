@@ -15,7 +15,7 @@
             // Create a function that the hub can call to broadcast messages.
             connection.on('broadcastMessage', function (fromUserName, message)
             {
-                var decryptedMessage = aesManager.decrypt(message);
+                var decryptedMessage = strip(aesManager.decrypt(message));
 
                 // HTML encode display name and message.
                 messagingManager.addMessage(decryptedMessage, messageType.Incoming);
@@ -29,7 +29,7 @@
             });
 
             connection.on('ConfirmRequest', function (fromUserName) {
-                //Create function in connecting manager
+                //TODO: Create function in connecting manager
                 chatManager.disableMessageBox(false);
                 connectingManager.changeConectionStatus(statusType.Connected);
                 connectingManager.changeColor(blockSide.center, "#296c00");
@@ -40,6 +40,7 @@
             });
 
             connection.on('CancelRequest', function (fromUserName) {
+                //TODO: Create function in connecting manager
                 chatManager.disableMessageBox(true);
                 connectingManager.changeConectionStatus(statusType.Canceled);
                 connectingManager.changeColor(blockSide.center, "red");
@@ -78,9 +79,17 @@
 
             connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId)
             {
-                if (disconnectedUserName === userManager.getCurrentUserName())
+                if (disconnectedUserName === userManager.getSendToUserName())
                 {
-
+                    //TODO: Create function in connecting manager
+                    chatManager.disableMessageBox(true);
+                    connectingManager.showConnectionModal();
+                    connectingManager.changeConectionStatus(statusType.Canceled);
+                    connectingManager.changeColor(blockSide.center, "red");
+                    connectingManager.changeColor(blockSide.background, "#d72525");
+                    setTimeout(function () {
+                        connectingManager.hideConnectionModal();
+                    }, 5000);
                 }
                 else
                 {
