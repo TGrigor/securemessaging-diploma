@@ -1,6 +1,6 @@
 ﻿.chat-content {
     width: 100%;
-    height:100%;
+    height: 100%;
     display: inline-block;
 }
 
@@ -9,6 +9,11 @@
         width: 70%;
         height: 100%;
         position: relative;
+    }
+
+    .chat-content .filterDisable {
+        -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+        filter: grayscale(100%);
     }
 
     .chat-content .chat-user-content {
@@ -182,6 +187,7 @@ body {
             }
 
 .bottom_wrapper {
+    display: none;
     background-color: #fff;
     padding: 20px 20px;
 }

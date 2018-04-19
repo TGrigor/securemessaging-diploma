@@ -55,7 +55,6 @@ var messagingManager = function ()
         this.message_side = message_side1;
         this.draw = () => {
             var $message;
-
             $message = $($('.message_template').clone().html());
 
             $message.addClass(this.message_side).find('.text').html(this.text);
@@ -104,7 +103,7 @@ var messagingManager = function ()
         inputMessage.val("");
         inputMessage.focus();
     }
-    
+   
     return {
         init: init,
         addMessage: addMessage,

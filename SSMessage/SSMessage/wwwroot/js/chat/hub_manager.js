@@ -19,21 +19,18 @@
 
                 // HTML encode display name and message.
                 messagingManager.addMessage(decryptedMessage, messageType.Incoming);
-
-                messagingManager.deleteMeesageBox();
             });
 
             //Confirmation modal section
             connection.on('ChatRequest', function (fromUserName)
             {
-                confirmationManager.hideAndResetModal();
                 confirmationManager.setConfirmationType(confirmationType.Incoming);
                 confirmationManager.showModal(fromUserName);
-                userManager.setSendToUserName(fromUserName);
             });
 
             connection.on('ConfirmRequest', function (fromUserName) {
                 //Create function in connecting manager
+                chatManager.disableMessageBox(false);
                 connectingManager.changeConectionStatus(statusType.Connected);
                 connectingManager.changeColor(blockSide.center, "#296c00");
                 connectingManager.changeColor(blockSide.background, "#296c00");
@@ -43,6 +40,7 @@
             });
 
             connection.on('CancelRequest', function (fromUserName) {
+                chatManager.disableMessageBox(true);
                 connectingManager.changeConectionStatus(statusType.Canceled);
                 connectingManager.changeColor(blockSide.center, "red");
                 connectingManager.changeColor(blockSide.background, "#d72525");

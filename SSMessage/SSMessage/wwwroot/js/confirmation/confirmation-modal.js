@@ -9,7 +9,8 @@ var confirmationManager = function () {
     var messageBox;
     var inputKeyForEncryption;
     var modalConfirm, modalCancel;
-    var confirmModalType
+    var confirmModalType;
+    var requestedBy;
 
     var init = function () {
 
@@ -29,7 +30,7 @@ var confirmationManager = function () {
         $parrentModal.hide();
 
         modalConfirm.on('click', function () {
-            confirmModal(confirmModalType);
+            confirmModal();
         });
 
         modalCancel.on('click', function () {
@@ -43,12 +44,14 @@ var confirmationManager = function () {
         });
     }
 
-    var confirmModal = function (confType)
+    var confirmModal = function ()
     {
         //TODO validate input
         aesManager.setKey(inputKeyForEncryption.val());
+        hubManager.getConnection().invoke('CancelRequest', userManager.getSendToUserName());
+        userManager.setSendToUserName(requestedBy);
 
-        switch (confType)
+        switch (confirmModalType)
         {
             case confirmationType.Outgoing:
                 connectingManager.showConnectionModal();
@@ -62,6 +65,7 @@ var confirmationManager = function () {
 
             case confirmationType.Incoming:
                 hubManager.getConnection().invoke('ConfirmRequest', userManager.getSendToUserName());
+                chatManager.disableMessageBox(false);
                 break;
 
             default:
@@ -71,13 +75,23 @@ var confirmationManager = function () {
 
     }
 
-    var cancelModal = function () {
+    var cancelModal = function (confType) {
+        switch (confirmModalType)
+        {
+            case confirmationType.Outgoing:
+                break;
+
+            case confirmationType.Incoming:
+                hubManager.getConnection().invoke('CancelRequest', requestedBy);
+                break;
+
+            default:
+        }
         hideAndResetModal();
-        hubManager.getConnection().invoke('CancelRequest', userManager.getSendToUserName());
     }
 
     var showModal = function (userName) {
-        userManager.setSendToUserName(userName);
+        requestedBy = userName;
         messageBox.text(" " + userName);
         $parrentModal.show("slow");
     }
