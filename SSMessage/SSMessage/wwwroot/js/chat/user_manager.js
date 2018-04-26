@@ -8,12 +8,16 @@ var userManager = function()
     var userList;
     var sendToUserName;
     var currentUserName;
+    var currentUserAvatarUrl;
+    var sendToUserAvatarUrl;
 
     //Events
     var init = function(userName)
     {
         userList = $(".user");
         currentUserName = userName;
+        var pictureNumber = Math.floor(Math.random() * 7) + 1;
+        currentUserAvatarUrl = "/images/user_pictures/userPicture_0" + pictureNumber + ".png";
         load();
     }
     var load = function()
@@ -122,7 +126,9 @@ var userManager = function()
 
         var template = '<div class="user" id="' + userConnectionId + '">';
         //change picture
-        template += '<img src="http://www-cdn.jtvnw.net/images/xarth/404_user_150x150.png" class="logo">';
+        var pictureNumber = Math.floor(Math.random() * 7) + 1;
+        var src = "/images/user_pictures/userPicture_0" + pictureNumber + ".png";
+        template += '<img src="'+ src +'" class="logo">';
         template += '<span class="name">';
         template += userName;
         template += '</span>';
@@ -166,14 +172,26 @@ var userManager = function()
             $("#" + userId).remove();
         }
     }
+    var getCurrentUserAvatarUrl = () => {
+        return currentUserAvatarUrl;
+    }
+    var getSendToUserAvatarUrl = () => {
+        return sendToUserAvatarUrl;
+    }
+    var setSendToUserAvatarUrl = (src) => {
+        sendToUserAvatarUrl = src;
+    }
 
     return {
         init: init,
         addNewUser: addNewUser,
         getCurrentUserName: getCurrentUserName,
         getSendToUserName: getSendToUserName,
+        getCurrentUserAvatarUrl: getCurrentUserAvatarUrl,
+        getSendToUserAvatarUrl: getSendToUserAvatarUrl,
         getUsers: getUsers,
         setSendToUserName: setSendToUserName,
+        setSendToUserAvatarUrl: setSendToUserAvatarUrl,
         removeUsers: removeUsers,
         removeUserById: removeUserById
     }

@@ -52,16 +52,17 @@ var messagingManager = function()
     }
 
     //Message class Template
-    var Message = function({ text: text1, message_side: message_side1 })
+    var Message = function ({ text: text1, message_side: message_side1, avatarUrl: avatarUrl1 })
     {
         this.text = strip(text1);
         this.message_side = message_side1;
+        this.avatarUrl = avatarUrl1;
         this.draw = () =>
         {
             var $message;
             $message = $($('.message_template').clone().html());
-
             $message.addClass(this.message_side).find('.text').html(this.text);
+            //$message.find('.avatar').html('<img src="'+this.avatarUrl+'" class="logo">');
 
             $('.messages').append($message);
 
@@ -89,18 +90,20 @@ var messagingManager = function()
             return;
         }
         $messages = $('.messages');
-
+        var avatarUrl = "";
         switch (mType)
         {
             case messageType.Incoming:
                 message_side = 'right';
+                avatarUrl = userManager.getSendToUserAvatarUrl();
                 break;
             case messageType.Outgoing:
                 message_side = 'left';
+                avatarUrl = userManager.getCurrentUserAvatarUrl();
                 break;
         }
 
-        message = new Message({ text, message_side });
+        message = new Message({ text, message_side, avatarUrl});
         message.draw();
 
         return $messages.animate({

@@ -46,6 +46,7 @@ var confirmationManager = function()
     {
         selector.on('click', function()
         {
+            userManager.setSendToUserAvatarUrl($(this).find(".logo").attr('src'));
             showModal($(this).text());
         });
     }

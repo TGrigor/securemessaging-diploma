@@ -109,3 +109,8 @@ input[type="radio"] {
             input[type="radio"]:checked ~ input:active {
                 background-position: 0 -24px;
             }
+
+.avatar .logo{
+    width: 100%;
+    height: 100%;
+}
