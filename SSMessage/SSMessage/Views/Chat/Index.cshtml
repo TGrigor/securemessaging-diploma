@@ -11,7 +11,7 @@
 <script src="~/js/signalr/signalr-msgpackprotocol-1.0.0-alpha2-final.js"></script>
 <script src="~/js/crypto/crypto-js.min.js"></script>
 <script src="~/js/crypto/crypto-manager.js"></script>
-<script src="~/js/crypto/jsencrypt.js"></script>>
+<script src="~/js/crypto/jsencrypt.js"></script>
 <script src="~/js/chat/user_manager.js"></script>
 <script src="~/js/loader/connecting-modal.js"></script>
 
@@ -26,10 +26,8 @@
 }
 
 @Html.Partial("~/Views/Partial/_Confirmation.cshtml")
-@Html.Partial("~/Views/Partial/_Connection.cshtml")
 
 <div class="chat-content">
-
     <div class="chat-message-content filterDisable">
         @Html.Partial("~/Views/Chat/_ChatMessage.cshtml")
     </div>

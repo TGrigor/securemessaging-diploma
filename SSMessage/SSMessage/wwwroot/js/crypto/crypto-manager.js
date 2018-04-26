@@ -88,6 +88,10 @@
     {
         return publicKey;
     }
+    var setRsaPublicKey = (rsaKey) =>
+    {
+        publicKey = rsaKey;
+    }
     var getGeneratedTimeReport = () =>
     {
         return generatedTimeReport;
@@ -101,6 +105,7 @@
         decryptUsingAes: decryptUsingAes,
         generateNewRsaKeys: generateNewRsaKeys,
         getRsaPublicKey: getRsaPublicKey,
+        setRsaPublicKey: setRsaPublicKey,
         getGeneratedTimeReport: getGeneratedTimeReport,
         encryptUsingRsa: encryptUsingRsa,
         decryptUsingRsa: decryptUsingRsa

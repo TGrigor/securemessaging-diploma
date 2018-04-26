@@ -32,12 +32,15 @@
                 </a>
             </div>
             <div asp-authorize class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
+                <ul class="nav navbar-nav"></ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
     </nav>
+
+    @*TODO: Move to Chat index.html and correct CSS*@
+    @Html.Partial("~/Views/Partial/_Connection.cshtml")
+
     <div class="container body-content">
         @RenderBody()
         <hr />

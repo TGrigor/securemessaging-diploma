@@ -52,8 +52,6 @@ var confirmationManager = function()
 
     var confirmModal = function()
     {
-        //TODO validate input
-        cryptoManager.setKey(inputKeyForEncryption.val());
         //TODO Change the logic when my brain will returns
         hubManager.getConnection().invoke('CancelRequest', userManager.getSendToUserName());
         userManager.setSendToUserName(requestedBy);
@@ -61,8 +59,11 @@ var confirmationManager = function()
         switch (confirmModalType)
         {
             case confirmationType.Outgoing:
+                //connectingManager.changeConectionStatus(statusType.GeneratingKey);
                 connectingManager.showConnectionModal();
-                hubManager.getConnection().invoke('ChatRequest', userManager.getSendToUserName());
+                cryptoManager.generateNewRsaKeys();
+                console.log(cryptoManager.getGeneratedTimeReport());
+                hubManager.getConnection().invoke('ChatRequest', userManager.getSendToUserName(), cryptoManager.getRsaPublicKey());
                 setTimeout(function()
                 {
                     //Change color name hard code to enum value
@@ -72,8 +73,20 @@ var confirmationManager = function()
                 break;
 
             case confirmationType.Incoming:
-                hubManager.getConnection().invoke('ConfirmRequest', userManager.getSendToUserName());
+                var randomAesKey = randomString();
+                cryptoManager.setKey(randomAesKey);
+                var encryptedAesKey = cryptoManager.encryptUsingRsa(randomAesKey);
+
+                hubManager.getConnection().invoke('ConfirmRequest', userManager.getSendToUserName(), encryptedAesKey);
+                //TODO remove dublication and add one function in conecting manager
                 chatManager.disableMessageBox(false);
+                connectingManager.showConnectionModal();
+                connectingManager.changeConectionStatus(statusType.Connected);
+                connectingManager.changeColor(blockSide.center, "#296c00");
+                connectingManager.changeColor(blockSide.background, "#296c00");
+                setTimeout(function () {
+                    connectingManager.hideConnectionModal();
+                }, 5000);
                 break;
 
             default:

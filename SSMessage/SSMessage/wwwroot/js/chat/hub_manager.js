@@ -22,15 +22,18 @@
                 });
 
                 //Confirmation modal section
-                connection.on('ChatRequest', function(fromUserName)
+                connection.on('ChatRequest', function(fromUserName, rsaPublicKey)
                 {
+                    cryptoManager.setRsaPublicKey(rsaPublicKey);
                     confirmationManager.setConfirmationType(confirmationType.Incoming);
                     confirmationManager.showModal(fromUserName);
                 });
 
-                connection.on('ConfirmRequest', function(fromUserName)
+                connection.on('ConfirmRequest', function(fromUserName, encryptedAesKey)
                 {
                     //TODO: Create function in connecting manager
+                    cryptoManager.setKey(cryptoManager.decryptUsingRsa(encryptedAesKey));
+
                     chatManager.disableMessageBox(false);
                     connectingManager.changeConectionStatus(statusType.Connected);
                     connectingManager.changeColor(blockSide.center, "#296c00");

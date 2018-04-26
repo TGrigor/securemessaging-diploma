@@ -1,6 +1,7 @@
 var statusType = {
     Canceled: 0,
-    Connected: 1
+    Connected: 1,
+    GeneratingKey: 2
 }
 
 var blockSide = {
@@ -42,6 +43,12 @@ var connectingManager = function()
                 connectingStatusText.text("User cancel request!");
                 //Color red
                 break;
+            case statusType.GeneratingKey:
+                connectingStatusText.text("Generating RSA Keys!");
+                //Color red
+                break;
+            default:
+                connectingStatusText.text("Connecting!");
         }
     }
 

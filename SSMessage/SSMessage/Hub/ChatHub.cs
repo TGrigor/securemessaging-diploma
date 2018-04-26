@@ -21,20 +21,23 @@ namespace SSMessage
             Clients.Client(connectionId).InvokeAsync("broadcastMessage", fromUserName, message);
         }
 
-        public void ChatRequest(string userNameTo)
+        public void ChatRequest(string userNameTo, string rsaPublicKey)
         {
-            string fromUserName = Context.User.Identity.Name;
-            string connectionId = _connections.GetConnection(userNameTo);
+            if (userNameTo != null)
+            {
+                string fromUserName = Context.User.Identity.Name;
+                string connectionId = _connections.GetConnection(userNameTo);
 
-            Clients.Client(connectionId).InvokeAsync("ChatRequest", fromUserName);
+                Clients.Client(connectionId).InvokeAsync("ChatRequest", fromUserName, rsaPublicKey);
+            }
         }
 
-        public void ConfirmRequest(string userNameTo)
+        public void ConfirmRequest(string userNameTo, string encryptedAesKey)
         {
             string fromUserName = Context.User.Identity.Name;
             string connectionId = _connections.GetConnection(userNameTo);
 
-            Clients.Client(connectionId).InvokeAsync("ConfirmRequest");
+            Clients.Client(connectionId).InvokeAsync("ConfirmRequest", fromUserName, encryptedAesKey);
         }
 
         public void CancelRequest(string userNameTo)
