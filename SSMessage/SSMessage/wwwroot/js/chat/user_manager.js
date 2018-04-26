@@ -3,92 +3,115 @@
     Offline: 1
 }
 
-var userManager = function ()
+var userManager = function()
 {
     var userList;
     var sendToUserName;
     var currentUserName;
 
     //Events
-    var init = function (userName)
+    var init = function(userName)
     {
         userList = $(".user");
         currentUserName = userName;
         load();
     }
-    var load = function () {
+    var load = function()
+    {
         //TODO: change
-        userList.on("click", function ()
+        userList.on("click", function()
         {
             sendToUserName = this.text;
         });
 
-        $('#search').keyup(function () {
-            // Get the value of the search box
-            searchVal = $(this).val().toLowerCase();
-            // Check each user for a match
-            $('#users > .user').each(function () {
-                text = $('.name', this).text().toLowerCase();
-                // If the search text is found show, otherwise hide.
-                if (text.indexOf(searchVal) !== -1) {
-                    $(this).show()
-                } else {
-                    $(this).hide();
-                }
+        $('#search')
+            .keyup(function()
+            {
+                // Get the value of the search box
+                searchVal = $(this).val().toLowerCase();
+                // Check each user for a match
+                $('#users > .user')
+                    .each(function()
+                    {
+                        text = $('.name', this).text().toLowerCase();
+                        // If the search text is found show, otherwise hide.
+                        if (text.indexOf(searchVal) !== -1)
+                        {
+                            $(this).show()
+                        }
+                        else
+                        {
+                            $(this).hide();
+                        }
+                    });
+                // change bgcolor on tabs accordingly
+                $('#all').addClass('active');
+                $('#online').removeClass('active');
+                $('#offline').removeClass('active');
             });
-            // change bgcolor on tabs accordingly
-            $('#all').addClass('active');
-            $('#online').removeClass('active');
-            $('#offline').removeClass('active');
-        });
 
         // 'all' tab
-        $('#all').click(function () {
+        $('#all')
+            .click(function()
+            {
+                $('#online').removeClass('active');
+                $('#all').addClass('active');
+                $('#offline').removeClass('active');
 
-            $('#online').removeClass('active');
-            $('#all').addClass('active');
-            $('#offline').removeClass('active');
-
-            $(".user").show();
-        });
+                $(".user").show();
+            });
 
         // 'online' tab
-        $('#online').click(function () {
+        $('#online')
+            .click(function()
+            {
+                $('#all').removeClass('active');
+                $('#online').addClass('active');
+                $('#offline').removeClass('active');
 
-            $('#all').removeClass('active');
-            $('#online').addClass('active');
-            $('#offline').removeClass('active');
-
-            $(".user").each(function () {
-                if ($(this).children(".offline").length === 0) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
+                $(".user")
+                    .each(function()
+                    {
+                        if ($(this).children(".offline").length === 0)
+                        {
+                            $(this).show();
+                        }
+                        else
+                        {
+                            $(this).hide();
+                        }
+                    });
             });
-        });
 
         // 'offline' tab
-        $('#offline').click(function () {
-            $('#all').removeClass('active');
-            $('#online').removeClass('active');
-            $('#offline').addClass('active');
+        $('#offline')
+            .click(function()
+            {
+                $('#all').removeClass('active');
+                $('#online').removeClass('active');
+                $('#offline').addClass('active');
 
-            $(".user").each(function () {
-                if ($(this).children(".offline").length === 0) {
-                    $(this).hide();
-                } else {
-                    $(this).show();
-                }
+                $(".user")
+                    .each(function()
+                    {
+                        if ($(this).children(".offline").length === 0)
+                        {
+                            $(this).hide();
+                        }
+                        else
+                        {
+                            $(this).show();
+                        }
+                    });
             });
-        });
     }
 
     //Methods
-    var addNewUser = function (userName, userConnectionId, aType)
+    var addNewUser = function(userName, userConnectionId, aType)
     {
         var streaming;
-        switch (aType) {
+        switch (aType)
+        {
             case actionType.Online:
                 streaming = '<span class="mega-octicon octicon-check status online"></span>';
                 break;
@@ -110,27 +133,30 @@ var userManager = function ()
         $('#users').append(template);
         confirmationManager.addShowModalEvent($("#" + userConnectionId));
         //TODO change event hendler
-        $("#" + userConnectionId).on("click", function ()
-        {
-           
-        });
+        $("#" + userConnectionId)
+            .on("click", function()
+                {});
         //TODO status
         //$('#' + userName).append('<div class="topic">' + stream.stream.channel.status + '</div>');
     }
-    var getCurrentUserName = () => {
+    var getCurrentUserName = () =>
+    {
         return currentUserName;
     }
-    var getSendToUserName = () => {
+    var getSendToUserName = () =>
+    {
         return sendToUserName;
     }
-    var setSendToUserName = (userName) => {
+    var setSendToUserName = (userName) =>
+    {
         sendToUserName = userName;
     }
-    var getUsers = () => {
+    var getUsers = () =>
+    {
         return $(".user");
     }
-    var removeUsers = () => {
-        debugger;
+    var removeUsers = () =>
+    {
         $(".user").remove();
     }
     var removeUserById = (userId) =>
@@ -141,7 +167,7 @@ var userManager = function ()
         }
     }
 
-    return    {
+    return {
         init: init,
         addNewUser: addNewUser,
         getCurrentUserName: getCurrentUserName,

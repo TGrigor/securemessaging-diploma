@@ -1,38 +1,41 @@
-﻿var chatManager = function ()
+﻿var chatManager = function()
 {
-    var init = function (userName)
+    var init = function(userName)
     {
         load();
         hubManager.init();
-        aesManager.init();
+        cryptoManager.init();
         messagingManager.init();
         confirmationManager.init();
         userManager.init(userName);
         connectingManager.init();
     }
 
-    var load = function ()
+    var load = function()
     {
         disableMessageBox(true);
         //TODO Loading icon
         //alert("Loading...");
     }
 
-    var disableMessageBox = function (onOf)
+    var disableMessageBox = function(onOf)
     {
         //TODO simplify code
-        if (onOf) {
+        if (onOf)
+        {
             $(".chat-message-content").addClass("filterDisable");
             $(".bottom_wrapper").hide();
         }
-        else {
+        else
+        {
             $(".chat-message-content").removeClass("filterDisable");
             $(".bottom_wrapper").show();
         }
         removeAllMessages();
     }
 
-    var removeAllMessages = function () {
+    var removeAllMessages = function()
+    {
         $(".message-content-box").find("li").remove()
     }
 

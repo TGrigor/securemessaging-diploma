@@ -1,8 +1,8 @@
-﻿var recorderManager = function ()
+﻿var recorderManager = function()
 {
     var video, reqBtn, startBtn, stopBtn, ul, stream, recorder;
 
-    var init = function ()
+    var init = function()
     {
         //Initialisation
         video = document.getElementById('video');
@@ -15,7 +15,7 @@
         load();
     }
 
-    var load = function ()
+    var load = function()
     {
         reqBtn.onclick = requestVideo;
         startBtn.onclick = startRecording;
@@ -28,23 +28,24 @@
         //alert("Loading...");
     }
 
-    var requestVideo = function ()
+    var requestVideo = function()
     {
         navigator.mediaDevices.getUserMedia(
-        {
-            video: true,
-            audio: true
-        })
-        .then(stm =>
-        {
-            stream = stm;
-            reqBtn.style.display = 'none';
-            startBtn.removeAttribute('disabled');
-            video.src = URL.createObjectURL(stream);
-        }).catch(e => console.error(e));
+                {
+                    video: true,
+                    audio: true
+                })
+            .then(stm =>
+            {
+                stream = stm;
+                reqBtn.style.display = 'none';
+                startBtn.removeAttribute('disabled');
+                video.src = URL.createObjectURL(stream);
+            })
+            .catch(e => console.error(e));
     }
 
-    var startRecording = function ()
+    var startRecording = function()
     {
         recorder = new MediaRecorder(stream);
         recorder.start();
@@ -52,7 +53,7 @@
         startBtn.disabled = true;
     }
 
-    var stopRecording = function ()
+    var stopRecording = function()
     {
         recorder.ondataavailable = e =>
         {

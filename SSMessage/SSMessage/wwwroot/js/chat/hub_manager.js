@@ -1,134 +1,144 @@
-﻿var hubManager = function ()
+﻿var hubManager = function()
 {
     var connectionObject;
 
     //Events
-    var init = function ()
+    var init = function()
     {
         load();
     }
-    var load = function ()
+    var load = function()
     {
         // Start the connection.
-        startConnection('/chat', function (connection)
-        {
-            // Create a function that the hub can call to broadcast messages.
-            connection.on('broadcastMessage', function (fromUserName, message)
+        startConnection('/chat', function(connection)
             {
-                var decryptedMessage = strip(aesManager.decrypt(message));
-
-                // HTML encode display name and message.
-                messagingManager.addMessage(decryptedMessage, messageType.Incoming);
-            });
-
-            //Confirmation modal section
-            connection.on('ChatRequest', function (fromUserName)
-            {
-                confirmationManager.setConfirmationType(confirmationType.Incoming);
-                confirmationManager.showModal(fromUserName);
-            });
-
-            connection.on('ConfirmRequest', function (fromUserName) {
-                //TODO: Create function in connecting manager
-                chatManager.disableMessageBox(false);
-                connectingManager.changeConectionStatus(statusType.Connected);
-                connectingManager.changeColor(blockSide.center, "#296c00");
-                connectingManager.changeColor(blockSide.background, "#296c00");
-                setTimeout(function () {
-                    connectingManager.hideConnectionModal();
-                }, 5000);
-            });
-
-            connection.on('CancelRequest', function (fromUserName) {
-                //TODO: Create function in connecting manager
-                chatManager.disableMessageBox(true);
-                connectingManager.changeConectionStatus(statusType.Canceled);
-                connectingManager.changeColor(blockSide.center, "red");
-                connectingManager.changeColor(blockSide.background, "#d72525");
-                setTimeout(function () {
-                    connectingManager.hideConnectionModal();
-                }, 5000);
-            });
-
-            //TODO move to user-manager.js and corrected code
-            connection.on('ConnectedAction', function (connectedUserName, connectedUserId, allConnectedUsers)
-            {
-                userManager.removeUsers()
-                var currentUserName = userManager.getCurrentUserName();
-
-                //TODO: refactoring and optimisation
-                $.each(allConnectedUsers, function (key, value)
+                // Create a function that the hub can call to broadcast messages.
+                connection.on('broadcastMessage', function(fromUserName, message)
                 {
-                    if (key !== currentUserName)
-                    {
-                        userManager.addNewUser(key, value, actionType.Online);
-                    }
+                    var decryptedMessage = strip(cryptoManager.decryptUsingAes(message));
+
+                    // HTML encode display name and message.
+                    messagingManager.addMessage(decryptedMessage, messageType.Incoming);
                 });
 
-                if (connectedUserName === currentUserName)
+                //Confirmation modal section
+                connection.on('ChatRequest', function(fromUserName)
                 {
-                    return;
-                }
-                else
-                {
-                    console.log(connectedUserName + "---- Connected");
-                    //TODO after added new function for gettiing all users uncomment this field
-                    //userManager.addNewUser(connectedUserName, connectedUserId, actionType.Online);
-                }
-            });
+                    confirmationManager.setConfirmationType(confirmationType.Incoming);
+                    confirmationManager.showModal(fromUserName);
+                });
 
-            connection.on('DisconnectAction', function (disconnectedUserName, disconnectedUserId)
-            {
-                if (disconnectedUserName === userManager.getSendToUserName())
+                connection.on('ConfirmRequest', function(fromUserName)
+                {
+                    //TODO: Create function in connecting manager
+                    chatManager.disableMessageBox(false);
+                    connectingManager.changeConectionStatus(statusType.Connected);
+                    connectingManager.changeColor(blockSide.center, "#296c00");
+                    connectingManager.changeColor(blockSide.background, "#296c00");
+                    setTimeout(function()
+                    {
+                        connectingManager.hideConnectionModal();
+                    }, 5000);
+                });
+
+                connection.on('CancelRequest', function(fromUserName)
                 {
                     //TODO: Create function in connecting manager
                     chatManager.disableMessageBox(true);
-                    connectingManager.showConnectionModal();
                     connectingManager.changeConectionStatus(statusType.Canceled);
                     connectingManager.changeColor(blockSide.center, "red");
                     connectingManager.changeColor(blockSide.background, "#d72525");
-                    setTimeout(function () {
+                    setTimeout(function()
+                    {
                         connectingManager.hideConnectionModal();
                     }, 5000);
-                }
-                else
+                });
+
+                //TODO move to user-manager.js and corrected code
+                connection.on('ConnectedAction', function(connectedUserName, connectedUserId, allConnectedUsers)
                 {
-                    console.log(disconnectedUserName + "---- Disconnected");
-                    userManager.removeUserById(disconnectedUserId);
-                }
+                    userManager.removeUsers()
+                    var currentUserName = userManager.getCurrentUserName();
+
+                    //TODO: refactoring and optimisation
+                    $.each(allConnectedUsers, function(key, value)
+                    {
+                        if (key !== currentUserName)
+                        {
+                            userManager.addNewUser(key, value, actionType.Online);
+                        }
+                    });
+
+                    if (connectedUserName === currentUserName)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        console.log(connectedUserName + "---- Connected");
+                        //TODO after added new function for gettiing all users uncomment this field
+                        //userManager.addNewUser(connectedUserName, connectedUserId, actionType.Online);
+                    }
+                });
+
+                connection.on('DisconnectAction', function(disconnectedUserName, disconnectedUserId)
+                {
+                    if (disconnectedUserName === userManager.getSendToUserName())
+                    {
+                        //TODO: Create function in connecting manager
+                        chatManager.disableMessageBox(true);
+                        connectingManager.showConnectionModal();
+                        connectingManager.changeConectionStatus(statusType.Canceled);
+                        connectingManager.changeColor(blockSide.center, "red");
+                        connectingManager.changeColor(blockSide.background, "#d72525");
+                        setTimeout(function()
+                        {
+                            connectingManager.hideConnectionModal();
+                        }, 5000);
+                    }
+                    else
+                    {
+                        console.log(disconnectedUserName + "---- Disconnected");
+                        userManager.removeUserById(disconnectedUserId);
+                    }
+                });
+            })
+            .then(function(connection)
+            {
+                console.log('connection started');
+                connectionObject = connection;
+            })
+            .catch(error =>
+            {
+                console.error(error.message);
             });
-        })
-        .then(function (connection)
-        {
-            console.log('connection started');
-            connectionObject = connection;
-        })
-        .catch(error =>
-        {
-            console.error(error.message);
-        });
     }
 
     //Methods
-    var startConnection = function (url, configureConnection)
+    var startConnection = function(url, configureConnection)
     {
-        return function start(transport) {
+        return function start(transport)
+        {
             console.log(`Starting connection using ${signalR.TransportType[transport]} transport`)
 
             var connection = new signalR.HubConnection(url, { transport: transport });
 
-            if (configureConnection && typeof configureConnection === 'function') {
+            if (configureConnection && typeof configureConnection === 'function')
+            {
                 configureConnection(connection);
             }
 
             return connection.start()
-                .then(function () {
+                .then(function()
+                {
                     return connection;
                 })
-                .catch(function (error) {
+                .catch(function(error)
+                {
                     console.log(`Cannot start the connection use ${signalR.TransportType[transport]} transport. ${error.message}`);
 
-                    if (transport !== signalR.TransportType.LongPolling) {
+                    if (transport !== signalR.TransportType.LongPolling)
+                    {
                         return start(transport + 1);
                     }
 
@@ -136,7 +146,8 @@
                 });
         }(signalR.TransportType.WebSockets);
     }
-    var getConnection = () => {
+    var getConnection = () =>
+    {
         return connectionObject;
     }
 

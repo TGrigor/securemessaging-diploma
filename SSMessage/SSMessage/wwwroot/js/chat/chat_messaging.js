@@ -3,32 +3,33 @@
     Incoming: 1
 }
 
-var messagingManager = function ()
+var messagingManager = function()
 {
     var inputMessage;
     var btnSendMessage;
     var message_side = 'left';
 
     //Events
-    var init = function (userName)
+    var init = function(userName)
     {
         inputMessage = $("#inputMessage");
         btnSendMessage = $("#btnSendMessage");
 
         load();
     }
-    var load = function () {
+    var load = function()
+    {
         //Focus to textarea
         inputMessage.focus();
 
         //TODO : marge events
-        btnSendMessage.click(function (e)
+        btnSendMessage.click(function(e)
         {
             return addMessage(getMessageText(), messageType.Outgoing);
         });
-        btnSendMessage.on('click', function (event)
+        btnSendMessage.on('click', function(event)
         {
-            var encryptedMessage = aesManager.encrypt(inputMessage.val());
+            var encryptedMessage = cryptoManager.encryptUsingAes(inputMessage.val());
 
             // Call the Send method on the hub.
             hubManager.getConnection().invoke('send', userManager.getSendToUserName(), encryptedMessage);
@@ -38,22 +39,25 @@ var messagingManager = function ()
         });
 
         // Enter key event for input
-        inputMessage.keyup(function (e) {
-            if (e.which === 13 && !e.shiftKey) {
+        inputMessage.keyup(function(e)
+        {
+            if (e.which === 13 && !e.shiftKey)
+            {
                 // enter key
                 var code = e.keyCode ? e.keyCode : e.which;
                 btnSendMessage.click();
                 return addMessage(getMessageText(), messageType.Outgoing);
             }
-        });       
+        });
     }
 
     //Message class Template
-    var Message = function ({ text: text1, message_side: message_side1 })
+    var Message = function({ text: text1, message_side: message_side1 })
     {
         this.text = strip(text1);
         this.message_side = message_side1;
-        this.draw = () => {
+        this.draw = () =>
+        {
             var $message;
             $message = $($('.message_template').clone().html());
 
@@ -61,28 +65,33 @@ var messagingManager = function ()
 
             $('.messages').append($message);
 
-            return setTimeout(function () {
+            return setTimeout(function()
+            {
                 return $message.addClass('appeared');
             }, 0);
         };
         return this;
     }
 
-    var getMessageText = function () {
+    var getMessageText = function()
+    {
         return inputMessage.val();
     }
-    var addMessage = function (text, mType) {
+    var addMessage = function(text, mType)
+    {
         var $messages, message;
 
         //RegX
         //text = text.replace(/.{10}\S*\s+/g, "$&@").split(/\s+@/)
 
-        if (text.trim() === '') {
+        if (text.trim() === '')
+        {
             return;
         }
         $messages = $('.messages');
 
-        switch (mType) {
+        switch (mType)
+        {
             case messageType.Incoming:
                 message_side = 'right';
                 break;
@@ -98,12 +107,13 @@ var messagingManager = function ()
             scrollTop: $messages.prop('scrollHeight')
         }, 300);
     }
-    var deleteMeesageBox = function () {
+    var deleteMeesageBox = function()
+    {
         // Clear text box and reset focus for next comment.
         inputMessage.val("");
         inputMessage.focus();
     }
-   
+
     return {
         init: init,
         addMessage: addMessage,

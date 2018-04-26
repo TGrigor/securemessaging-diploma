@@ -10,13 +10,13 @@ var blockSide = {
     background: 3
 }
 
-var connectingManager = function () {
-
+var connectingManager = function()
+{
     var connModal;
     var connectingStatusText;
     var leftConnectionBlock, rightConnectionBlock, centerLine;
 
-    var init = function ()
+    var init = function()
     {
         //Initialization
         connModal = $(".connecting")
@@ -27,12 +27,13 @@ var connectingManager = function () {
         //Events
         load();
     }
-    var load = function () {
+    var load = function()
+        {}
 
-    }
-
-    var changeConectionStatus = function (connectionStatus) {
-        switch (connectionStatus) {
+    var changeConectionStatus = function(connectionStatus)
+    {
+        switch (connectionStatus)
+        {
             case statusType.Connected:
                 connectingStatusText.text("User Connected!");
                 //Color green
@@ -44,9 +45,10 @@ var connectingManager = function () {
         }
     }
 
-    var changeColor = function (side, color) {
-
-        switch (side) {
+    var changeColor = function(side, color)
+    {
+        switch (side)
+        {
             case blockSide.right:
                 rightConnectionBlock.css("color", color);
                 rightConnectionBlock.css("background", color);
@@ -55,7 +57,7 @@ var connectingManager = function () {
                 leftConnectionBlock.css("color", color);
                 leftConnectionBlock.css("background", color);
                 break;
-            case blockSide.center: 
+            case blockSide.center:
                 centerLine.css("color", color);
                 centerLine.css("background", color);
                 break;
@@ -65,18 +67,20 @@ var connectingManager = function () {
         }
     }
 
-    var resetConnectionModal = function ()
+    var resetConnectionModal = function()
     {
         connectingStatusText.text("CONNECTING");
         changeColor(blockSide.center, "white")
         changeColor(blockSide.background, "#459BF9")
     }
 
-    var showConnectionModal = () => {
+    var showConnectionModal = () =>
+    {
         connModal.show();
     }
 
-    var hideConnectionModal = () => {
+    var hideConnectionModal = () =>
+    {
         connModal.hide();
         resetConnectionModal();
     }
@@ -89,4 +93,3 @@ var connectingManager = function () {
         hideConnectionModal: hideConnectionModal
     }
 }();
-
