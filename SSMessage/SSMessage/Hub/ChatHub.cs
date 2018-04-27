@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 using SSMessage.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SSMessage
@@ -12,13 +13,19 @@ namespace SSMessage
     public class ChatHub : Hub
     {
         private readonly static ConnectionMapping _connections = new ConnectionMapping();
+        private readonly static Dictionary<string, string> p2pConnections = new Dictionary<string, string>();
 
         public void Send(string toUserName, string message)
         {
             string fromUserName =  Context.User.Identity.Name;
-            string connectionId = _connections.GetConnection(toUserName);
+            if (p2pConnections.ContainsKey(toUserName) && p2pConnections.ContainsValue(fromUserName)
+                || p2pConnections.ContainsKey(fromUserName) && p2pConnections.ContainsValue(toUserName))
+            {
+                string connectionId = _connections.GetConnection(toUserName);
 
-            Clients.Client(connectionId).InvokeAsync("broadcastMessage", fromUserName, message);
+                Clients.Client(connectionId).InvokeAsync("broadcastMessage", fromUserName, message);
+            }
+
         }
 
         public void ChatRequest(string userNameTo, string rsaPublicKey)
@@ -36,7 +43,7 @@ namespace SSMessage
         {
             string fromUserName = Context.User.Identity.Name;
             string connectionId = _connections.GetConnection(userNameTo);
-
+            p2pConnections.Add(userNameTo, fromUserName);
             Clients.Client(connectionId).InvokeAsync("ConfirmRequest", fromUserName, encryptedAesKey);
         }
 
@@ -44,6 +51,30 @@ namespace SSMessage
         {
             string fromUserName = Context.User.Identity.Name;
             string connectionId = _connections.GetConnection(userNameTo);
+
+            //TODO change idiotically code sorry for down code i write it in 2:00 AM ;)
+            if (p2pConnections.ContainsKey(fromUserName) || p2pConnections.ContainsValue(userNameTo))
+            {
+                if (p2pConnections.ContainsKey(fromUserName))
+                {
+                    p2pConnections.Remove(fromUserName);
+                }
+                if (p2pConnections.ContainsValue(userNameTo))
+                {
+                    p2pConnections.Remove(p2pConnections.First(kvp => kvp.Value == userNameTo).Key);
+                }
+            }
+            else
+            {
+                if (p2pConnections.ContainsKey(userNameTo))
+                {
+                    p2pConnections.Remove(userNameTo);
+                }
+                if (p2pConnections.ContainsValue(userNameTo))
+                {
+                    p2pConnections.Remove(p2pConnections.First(kvp => kvp.Value == userNameTo).Key);
+                }
+            }
 
             Clients.Client(connectionId).InvokeAsync("CancelRequest");
         }
@@ -62,6 +93,17 @@ namespace SSMessage
         public override Task OnDisconnectedAsync(Exception ex)
         {
             string name = Context.User.Identity.Name;
+
+            if (p2pConnections.ContainsKey(name))
+            {
+                p2pConnections.Remove(name);
+            }
+            if (p2pConnections.ContainsValue(name))
+            {
+                p2pConnections.Remove(p2pConnections.First(kvp => kvp.Value == name).Key);
+            }
+
+            
 
             _connections.Remove(name, Context.ConnectionId);
 
