@@ -73,7 +73,7 @@ var confirmationManager = function()
 
                 break;
 
-            case confirmationType.Incoming:
+            case confirmationType.Incoming:              
                 var randomAesKey = randomString();
                 cryptoManager.setKey(randomAesKey);
                 var encryptedAesKey = cryptoManager.encryptUsingRsa(randomAesKey);
@@ -114,6 +114,10 @@ var confirmationManager = function()
 
     var showModal = function(userName)
     {
+        if (true)
+        {
+            $("#notify_modal").trigger("play");
+        }
         requestedBy = userName;
         messageBox.text(" " + userName);
         $parrentModal.show("slow");

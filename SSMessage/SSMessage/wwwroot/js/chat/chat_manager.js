@@ -13,6 +13,13 @@
 
     var load = function()
     {
+        var audioNewMessage = document.getElementById("notify_new_message");
+        audioNewMessage.volume = 0.2;
+
+        var audioNewRequest = document.getElementById("notify_modal");
+        audioNewRequest.volume = 0.2;
+        
+
         disableMessageBox(true);
         //TODO Loading icon
         //alert("Loading...");

@@ -19,7 +19,7 @@ namespace SSMessage
 
         public void Send(string toUserName, string message)
         {
-            string fromUserName =  Context.User.Identity.Name;
+            string fromUserName = Context.User.Identity.Name;
             if (p2pConnections.ContainsKey(toUserName) && p2pConnections.ContainsValue(fromUserName)
                 || p2pConnections.ContainsKey(fromUserName) && p2pConnections.ContainsValue(toUserName))
             {
@@ -53,65 +53,68 @@ namespace SSMessage
 
         public void CancelRequest(string userNameTo)
         {
-            string fromUserName = Context.User.Identity.Name;
-            //TODO Change idiotically code sorry for down code i write it in 2:00 AM ;) 
-            //TODO Change dark code
-            if (p2pConnections.ContainsKey(fromUserName) && p2pConnections.ContainsValue(userNameTo) || p2pConnections.ContainsKey(userNameTo) && p2pConnections.ContainsValue(fromUserName))
+            if (!string.IsNullOrEmpty(userNameTo))
             {
-                if (p2pConnections.ContainsKey(fromUserName) || p2pConnections.ContainsValue(userNameTo))
+                string fromUserName = Context.User.Identity.Name;
+                //TODO Change idiotically code sorry for down code i write it in 2:00 AM ;) 
+                //TODO Change dark code
+                if (p2pConnections.ContainsKey(fromUserName) && p2pConnections.ContainsValue(userNameTo) || p2pConnections.ContainsKey(userNameTo) && p2pConnections.ContainsValue(fromUserName))
                 {
-                    if (p2pConnections.ContainsKey(fromUserName))
+                    if (p2pConnections.ContainsKey(fromUserName) || p2pConnections.ContainsValue(userNameTo))
                     {
-                        p2pConnections.Remove(fromUserName);
+                        if (p2pConnections.ContainsKey(fromUserName))
+                        {
+                            p2pConnections.Remove(fromUserName);
+                        }
+                        if (p2pConnections.ContainsValue(userNameTo))
+                        {
+                            p2pConnections.Remove(p2pConnections.First(kvp => kvp.Value == userNameTo).Key);
+                        }
                     }
-                    if (p2pConnections.ContainsValue(userNameTo))
+                    else
                     {
-                        p2pConnections.Remove(p2pConnections.First(kvp => kvp.Value == userNameTo).Key);
+                        if (p2pConnections.ContainsKey(userNameTo))
+                        {
+                            p2pConnections.Remove(userNameTo);
+                        }
+                        if (p2pConnections.ContainsValue(userNameTo))
+                        {
+                            p2pConnections.Remove(p2pConnections.First(kvp => kvp.Value == userNameTo).Key);
+                        }
                     }
+                    string connectionId = _connections.GetConnection(userNameTo);
+                    Clients.Client(connectionId).InvokeAsync("CancelRequest");
                 }
-                else
+                if (p2pRequests.ContainsKey(fromUserName) && p2pRequests.ContainsValue(userNameTo) || p2pRequests.ContainsKey(userNameTo)
+                    && p2pRequests.ContainsValue(fromUserName))
                 {
-                    if (p2pConnections.ContainsKey(userNameTo))
+                    if (p2pRequests.ContainsKey(fromUserName) || p2pRequests.ContainsValue(userNameTo))
                     {
-                        p2pConnections.Remove(userNameTo);
+                        if (p2pRequests.ContainsKey(fromUserName))
+                        {
+                            p2pRequests.Remove(fromUserName);
+                        }
+                        if (p2pRequests.ContainsValue(userNameTo))
+                        {
+                            p2pRequests.Remove(p2pRequests.First(kvp => kvp.Value == userNameTo).Key);
+                        }
                     }
-                    if (p2pConnections.ContainsValue(userNameTo))
+                    else
                     {
-                        p2pConnections.Remove(p2pConnections.First(kvp => kvp.Value == userNameTo).Key);
+                        if (p2pRequests.ContainsKey(userNameTo))
+                        {
+                            p2pRequests.Remove(userNameTo);
+                        }
+                        if (p2pRequests.ContainsValue(userNameTo))
+                        {
+                            p2pRequests.Remove(p2pRequests.First(kvp => kvp.Value == userNameTo).Key);
+                        }
                     }
+                    string connectionId = _connections.GetConnection(userNameTo);
+                    Clients.Client(connectionId).InvokeAsync("CancelRequest");
                 }
-                string connectionId = _connections.GetConnection(userNameTo);
-                Clients.Client(connectionId).InvokeAsync("CancelRequest");
             }
-            if (p2pRequests.ContainsKey(fromUserName) && p2pRequests.ContainsValue(userNameTo) || p2pRequests.ContainsKey(userNameTo) 
-                && p2pRequests.ContainsValue(fromUserName))
-            {
-                if (p2pRequests.ContainsKey(fromUserName) || p2pRequests.ContainsValue(userNameTo))
-                {
-                    if (p2pRequests.ContainsKey(fromUserName))
-                    {
-                        p2pRequests.Remove(fromUserName);
-                    }
-                    if (p2pRequests.ContainsValue(userNameTo))
-                    {
-                        p2pRequests.Remove(p2pRequests.First(kvp => kvp.Value == userNameTo).Key);
-                    }
-                }
-                else
-                {
-                    if (p2pRequests.ContainsKey(userNameTo))
-                    {
-                        p2pRequests.Remove(userNameTo);
-                    }
-                    if (p2pRequests.ContainsValue(userNameTo))
-                    {
-                        p2pRequests.Remove(p2pRequests.First(kvp => kvp.Value == userNameTo).Key);
-                    }
-                }
-                string connectionId = _connections.GetConnection(userNameTo);
-                Clients.Client(connectionId).InvokeAsync("CancelRequest");
-            }
-            
+
         }
 
         //TODO move to UserHub.cs
@@ -138,7 +141,7 @@ namespace SSMessage
                 p2pConnections.Remove(p2pConnections.First(kvp => kvp.Value == name).Key);
             }
 
-            
+
 
             _connections.Remove(name, Context.ConnectionId);
 

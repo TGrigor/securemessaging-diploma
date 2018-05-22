@@ -94,6 +94,10 @@ var messagingManager = function()
         switch (mType)
         {
             case messageType.Incoming:
+                if (true)
+                {
+                    $("#notify_new_message").trigger("play");
+                }
                 message_side = 'right';
                 avatarUrl = userManager.getSendToUserAvatarUrl();
                 break;
@@ -105,6 +109,8 @@ var messagingManager = function()
 
         message = new Message({ text, message_side, avatarUrl});
         message.draw();
+
+      
 
         return $messages.animate({
             scrollTop: $messages.prop('scrollHeight')
